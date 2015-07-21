@@ -30,12 +30,13 @@ class Model {
     
     public function prepareHead() {
         echo "<html><head>
+                <meta charset='UTF-8'>
                 <title>$this->title</title>
+                <script src='$this->jqueryAddress'></script>
+                <script src='$this->jsAddress'></script>
                 <link rel='stylesheet' type='text/css' href='$this->styleAddress'/>
                 <link rel='stylesheet' type='text/css' href='$this->bootstrapAddress'/>
                 <script src='$this->bootstrapScriptAddress'></script>
-                <script src='$this->jsAddress'></script>
-                <script src='$this->jqueryAddress'></script>
                 <link rel='shortcut icon' href='$this->iconAddress'/>
               </head>";
     }
@@ -45,7 +46,7 @@ class Model {
                 <nav class='navbar navbar-inverse'>
                 <div class='container-fluid'>
                   <div class='navbar-header'>
-                    <a class='navbar-brand' href='#'>$this->websiteName</a>
+                    <a class='navbar-brand' href='index.php'>$this->websiteName</a>
                   </div>
                   <div>";  
     }
@@ -55,7 +56,7 @@ class Model {
         foreach ($this->navLeftBtns as $name=>$url) {
             echo "<li><a href='$url'>$name</a></li>";
         }
-        //right btns
+        //right stuff
         echo "</ul><ul class='nav navbar-nav navbar-right'>";
         foreach ($this->navRightBtns as $name=>$url) {
             echo "<li><a href='$url'>$name</a></li>";
