@@ -28,6 +28,7 @@ class Model {
             
             //upload modal
             public $uploadModalHeading;
+            public $uploadModalTextLabel;
             public $uploadModalFileLabel;
             public $uploadModalLinkLabel;
             public $uploadModalUploadBtn;
@@ -144,13 +145,17 @@ class Model {
                           </div>
                           <div class='form-group'>
                             <label for='link'>$this->uploadModalLinkLabel:</label>
-                            <input type='password' class='form-control' id='modalLink'>
+                            <input type='text' class='form-control' id='modalLink'>
+                          </div>
+                          <div class='form-group'>
+                            <label for='description'>$this->uploadModalTextLabel:</label>
+                            <input type='text' class='form-control' id='modalUploadText'>
                           </div>
                         </form>
                     </div>
                     <div class='modal-footer'>
-                        <button type='submit' id='modalLogIn' class='btn btn-default' data-dismiss='modal'>$this->uploadModalUploadBtn</button>
-                      <button type='button' id='modalCloseLogIn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
+                        <button type='submit' id='modalUploadBtn' class='btn btn-default' data-dismiss='modal'>$this->uploadModalUploadBtn</button>
+                      <button type='button' id='modalCloseUploadBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
                 </div>

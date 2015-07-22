@@ -3,12 +3,12 @@ function request(type, url, dataToSend) {
     $.ajax({
         type: type,
         url: url,
-        data: dataToSend,
+        data: dataToSend
       })
         .done(function( data ) {
             //logIn
             if (url.search("logIn")>0) {
-                if (data != "noUser") {
+                if (data !== "noUser") {
                     $("#usrName").html(data).fadeIn();
                     $("#logInBtn").hide();
                     $("#logOutBtn").fadeIn();
@@ -21,7 +21,7 @@ function request(type, url, dataToSend) {
             }
             //checkSession
             if (url.search("checkSession")>0) {
-                if (data != "noUser") {
+                if (data !== "noUser") {
                     $("#usrName").html(data).fadeIn();
                     $("#addBtn").hide();
                     $("#logOutBtn").fadeIn();
@@ -39,8 +39,8 @@ function request(type, url, dataToSend) {
                 $("#logInBtn").fadeIn();
                 $("#addBtn").hide();
                 alert.createAlert(alert.logOutSuccess, alert.succ);
-                
             }
+            console.log(data);
         });
 }
 
@@ -84,11 +84,34 @@ $(document).ready(function() {
     $("#logOutBtn").click(function(){
         request("post","Controller/logOut.php");
     });
-});
 
 //fileUpload
     //write link validation function!!!
+    //to block input for links when image is chosen
+    $("#modalUpload").change(function() {
+        if ($("#modalUpload").val() !=="") {
+            $("#modalLink").prop("disabled", true);
+        } else {
+            $("#modalLink").prop("disabled", false);
+        }
+    });
+    //to block input for files when link is chosen
+    $("#modalLink").keyup(function() {
+        if ($("#modalLink").val().length > 0) {
+            $("#modalUpload").prop("disabled", true);
+        } else {
+            $("#modalUpload").prop("disabled", false);
+        }
+    });
+    $("#modalUploadBtn").click(function() {
+        if ($("#modalUpload").val() !=="") {
+            toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val()};
+        }
+        if ($("#modalLink").val().length > 0) {
+            toSend = {upload: $("#modalLink").val(), type:"vid", text:$("#modalUploadText").val()};
+        }
+        //if (validate()) add validation in terms of filling required fields
+        request("post","Controller/upload.php", toSend);
+    });
     
-
-
-
+});

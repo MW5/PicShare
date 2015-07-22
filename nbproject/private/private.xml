@@ -5,13 +5,14 @@
         <group>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Assets/Js/script.js</file>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Assets/Css/style.css</file>
+            <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Controller/upload.php</file>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/index.php</file>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/View/main_langPl.php</file>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Controller/logOut.php</file>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Model/model.php</file>
+            <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Controller/dbConnect.php</file>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Controller/logIn.php</file>
             <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Controller/config.php</file>
-            <file>file:/C:/Users/MW5/Documents/NetBeansProjects/PicShare/Controller/checkSession.php</file>
         </group>
     </open-files>
 </project-private>

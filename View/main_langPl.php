@@ -22,8 +22,9 @@ class LangPl extends Config {
     
     //upload modal
     public $uploadModalHeading = "Dodaj plik lub link do wideo";
+    public $uploadModalTextLabel = "Opis";
     public $uploadModalFileLabel = "Wybierz plik";
-    public $uploadModalLinkLabel = "Wklej link do flimiku z You Tube";
+    public $uploadModalLinkLabel = "Wklej link do filmiku z You Tube";
     public $uploadModalUploadBtn = "Dodaj";
     
 }
