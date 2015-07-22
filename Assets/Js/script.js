@@ -1,20 +1,33 @@
-function request(url) {
+
+
+function request(type, url, dataToSend) {
     $.ajax({
+        type: type,
         url: url,
-        beforeSend: function( xhr ) {
-          xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
-        }
+        data: dataToSend,
       })
         .done(function( data ) {
-            console.log(data);
+            if (url.search("logIn") || url.search("checkSession")) {
+                $("#usrName").html(data);
+            }
         });
 }
 $(document).ready(function() {
-    $("#test").click(function(){
-        request("Controller/login.php");
-    })
+//check session
+    request("post","Controller/checkSession.php");
+
+//log in
+    $("#modalLogIn").click(function(){
+        toSend =  {email: $("#modalEmail").val(), pass: $("#modalPass").val()};
+        request("post","Controller/logIn.php", toSend);
+    });
+
+//log out
+    $("#logOut").click(function(){
+        request("post","Controller/logOut.php");
+    });
+});
     
-    
-})
+
 
 

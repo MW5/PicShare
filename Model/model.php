@@ -100,7 +100,7 @@ class Model {
                         <form role='form'>
                           <div class='form-group'>
                             <label for='email'>$this->modalEmailLabel:</label>
-                            <input type='email' class='form-control' id='modalId' placeholder='Enter email'>
+                            <input type='email' class='form-control' id='modalEmail' placeholder='Enter email'>
                           </div>
                           <div class='form-group'>
                             <label for='pwd'>$this->modalPassLabel</label>
@@ -109,8 +109,8 @@ class Model {
                         </form>
                     </div>
                     <div class='modal-footer'>
-                        <button type='submit' class='btn btn-default' data-dismiss='modal'>$this->modalLogInBtn</button>
-                      <button type='button' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
+                        <button type='submit' id='modalLogIn' class='btn btn-default' data-dismiss='modal'>$this->modalLogInBtn</button>
+                      <button type='button' id='modalCloseLogIn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
                 </div>

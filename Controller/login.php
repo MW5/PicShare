@@ -2,12 +2,23 @@
 require "dbConnect.php";
 
 $host = "localhost";
-$user = "test";
-$pass = "testPass";
+$user = "mw5";
+$pass = "dupa";
 $dbName = "users";
-$query = "select * from users where usrname='$user' and usrpass='$pass'";
+
+$logEmail = $_POST['email'];
+$logPass = $_POST['pass'];
+
+$query = "select * from users where usrname='$logEmail' and usrpass='$logPass'";
 $logIn = new dbConnect;
 $response = $logIn->connection($host, $user, $pass, $dbName, $query);
-echo $numOfMatches = $response->num_rows;
-$test = $response->fetch_assoc();
-echo $test['usrname'];
+$numOfMatches = $response->num_rows;
+$dataFromDb = $response->fetch_assoc();
+if ($numOfMatches==1) {
+    session_start();
+    $_SESSION ['loggedUsr'] = $dataFromDb['usrname'];
+    echo $dataFromDb['usrname'];
+}
+
+
+
