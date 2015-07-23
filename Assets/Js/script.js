@@ -1,4 +1,27 @@
 
+//validation object
+var validate = {
+    //realtime login validation function
+    rtLogInValidation: function(keyTarget, subj1, subj2, minLength1, minLength2, toBlock) {
+        $(keyTarget).keyup(function() {
+            if (subj1.val().length >= minLength1 && subj2.val().length >= minLength2){
+                $(toBlock).prop('disabled', false);
+            } else {
+                $(toBlock).prop('disabled', true);
+            }
+        });
+    },
+    rtUploadValidation: function(keyTarget, subj1, subj2, minLength1, minLength2, toBlock) {
+        $(keyTarget).keyup(function() {
+            if (subj1.val().length >= minLength1 && subj2.val().length >= minLength2){
+                $(toBlock).prop('disabled', false);
+            } else {
+                $(toBlock).prop('disabled', true);
+            }
+        });
+    }
+}
+
 function request(type, url, dataToSend) {
     $.ajax({
         type: type,
@@ -7,7 +30,7 @@ function request(type, url, dataToSend) {
       })
         .done(function( data ) {
             //logIn
-            if (url.search("logIn")>0) {
+            if (url.search("logIn")>=0) {
                 if (data !== "noUser") {
                     $("#usrName").html(data).fadeIn();
                     $("#logInBtn").hide();
@@ -20,7 +43,7 @@ function request(type, url, dataToSend) {
                 }
             }
             //checkSession
-            if (url.search("checkSession")>0) {
+            if (url.search("checkSession")>=0) {
                 if (data !== "noUser") {
                     $("#usrName").html(data).fadeIn();
                     $("#addBtn").hide();
@@ -32,7 +55,7 @@ function request(type, url, dataToSend) {
                 }
             }
             //logOut
-            if (url.search("logOut")>0) {
+            if (url.search("logOut")>=0) {
                 $("#usrName").hide();
                 $("#logOutBtn").hide();
                 $("#createAccBtn").fadeIn();
@@ -40,8 +63,15 @@ function request(type, url, dataToSend) {
                 $("#addBtn").hide();
                 alert.createAlert(alert.logOutSuccess, alert.succ);
             }
-            console.log(data);
-        });
+            //upload
+            if (url.search("upload")>=0) {
+                alert.createAlert(alert.uploadSuccess, alert.succ);
+            }
+            
+        })
+        .fail(function() {
+            alert.createAlert(alert.sthWentWrong, alert.dang);
+        })
 }
 
 var alert = {
@@ -49,6 +79,8 @@ var alert = {
     logInSuccess: "Zalogowano pomyślnie",
     logInFail: "Błędne dane logowania",
     logOutSuccess: "Wylogowano poprawnie",
+    uploadSuccess: "Dodano pomyślnie",
+    sthWentWrong: "Wystąpił problem!",
     //types
     succ: "Success",
     info: "Info",
@@ -70,11 +102,15 @@ $(document).ready(function() {
     $("#logOutBtn").hide();
     $("#createAccBtn").hide();
     $("#addBtn").hide();
-//check session
+
+    
+    //check session
     request("post","Controller/checkSession.php");
 
 //log in
-    //write email and password validation function!!!
+    
+    validate.rtLogInValidation($("#modalUsrData"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
+    validate.rtLogInValidation($("#modalPass"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
     $("#modalLogInBtn").click(function(){
         toSend =  {usrData: $("#modalUsrData").val(), pass: $("#modalPass").val()};
         request("post","Controller/logIn.php", toSend);

@@ -122,7 +122,7 @@ class Model {
                         </form>
                     </div>
                     <div class='modal-footer'>
-                        <button type='submit' id='modalLogInBtn' class='btn btn-default' data-dismiss='modal'>$this->logInModalLogInBtn</button>
+                        <button type='submit' id='modalLogInBtn' class='btn btn-default' data-dismiss='modal' disabled='true'>$this->logInModalLogInBtn</button>
                       <button type='button' id='modalCloseLogIn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
