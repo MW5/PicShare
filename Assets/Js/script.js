@@ -19,10 +19,20 @@ var validate = {
         var ext = toCheck.val().split('.').pop().toLowerCase();
         if($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) {
             toCheck.css('background-color', WRONGCOLOR);
-            return 0;
+            return false;
         } else {
             toCheck.css('background-color', GOODCOLOR);
-            return 1;
+            return true;
+        }
+    },
+    //validates the youtube link
+    uplLinkValidation: function(toCheck) {
+        if (toCheck.val().search("https://www.youtube.com/")>=0) {
+            toCheck.css('background-color', GOODCOLOR);
+            return true;
+        } else {
+            toCheck.css('background-color', WRONGCOLOR);
+            return false;
         }
     }
 };
@@ -125,19 +135,22 @@ $(document).ready(function() {
     });
 
 //fileUpload
-    //write link validation function!!!
+    //file
     $("#modalUpload").change(function() {
         if ($("#modalUpload").val() !=="" && validate.checkExtension($("#modalUpload"))) {
             $("#modalLink").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", false);
-        } else {
+        }   else if ($("#modalUpload").val() ==="") {
+            $("#modalUpload").css('background-color', 'transparent');
+            $("#modalUploadBtn").prop("disabled", true);
+        }   else {
             $("#modalLink").prop("disabled", false);
             $("#modalUploadBtn").prop("disabled", true);
         }
     });
-    //to block input for files when link is chosen
+    //link
     $("#modalLink").keyup(function() {
-        if ($("#modalLink").val().length > 0) {
+        if (validate.uplLinkValidation($("#modalLink"))) {
             $("#modalUpload").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", false);
         } else {
@@ -145,15 +158,17 @@ $(document).ready(function() {
             $("#modalUploadBtn").prop("disabled", true);
         }
     });
+    //uploadBtn
     $("#modalUploadBtn").click(function() {
         if ($("#modalUpload").val() !=="") {
             toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val()};
         }
         if ($("#modalLink").val().length > 0) {
-            toSend = {upload: $("#modalLink").val(), type:"vid", text:$("#modalUploadText").val()};
+            queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('=')+1);
+            console.log(queryLink);
+            toSend = {upload: $("#modalLink").val(), type:"vid", text: queryLink};
         }
-        //if (validate()) add validation in terms of filling required fields
-        request("post","Controller/upload.php", toSend);
+        //request("post","Controller/upload.php", toSend);
     });
     
 });
