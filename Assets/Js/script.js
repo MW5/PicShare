@@ -27,7 +27,7 @@ var validate = {
     },
     //validates the youtube link
     uplLinkValidation: function(toCheck) {
-        if (toCheck.val().search("https://www.youtube.com/")>=0) {
+        if (toCheck.val().search("https://www.youtube.com/")>=0 || toCheck.val().search("https://youtu.be/")>=0) {
             toCheck.css('background-color', GOODCOLOR);
             return true;
         } else {
@@ -35,6 +35,7 @@ var validate = {
             return false;
         }
     }
+    
 };
 
 function request(type, url, dataToSend) {
@@ -155,27 +156,30 @@ $(document).ready(function() {
             $("#modalUpload").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", false);
         } else if (!$("#modalLink").val().length<1) {
-            $("#modalUpload").css('background-color', 'transparent');
             $("#modalUpload").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", true);
         }
         else  {
+            $("#modalLink").css('background-color', 'transparent');
             $("#modalUpload").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", true);
         }
     });
+    //text
+    
+    //write text validation 
+    
     //uploadBtn
     $("#modalUploadBtn").click(function() {
         if ($("#modalUpload").val() !=="") {
             toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val()};
         }
         if ($("#modalLink").val().length > 0) {
-            queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('=')+1);
+            //ogarnac dla roznych typow linkow queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('=')+1);
             console.log(queryLink);
             toSend = {upload: $("#modalLink").val(), type:"vid", text: queryLink};
         }
         //request("post","Controller/upload.php", toSend);
     });
-    //
     
 });
