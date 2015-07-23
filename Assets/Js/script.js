@@ -17,7 +17,7 @@ var validate = {
     //checks upload file extension 
     checkExtension: function(toCheck) {
         var ext = toCheck.val().split('.').pop().toLowerCase();
-        if($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) {
+        if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
             toCheck.css('background-color', WRONGCOLOR);
             return false;
         } else {
@@ -140,11 +140,12 @@ $(document).ready(function() {
         if ($("#modalUpload").val() !=="" && validate.checkExtension($("#modalUpload"))) {
             $("#modalLink").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", false);
-        }   else if ($("#modalUpload").val() ==="") {
+        }   else if ($("#modalUpload").val() =="") {
             $("#modalUpload").css('background-color', 'transparent');
             $("#modalUploadBtn").prop("disabled", true);
+            $("#modalLink").prop("disabled", false);   
         }   else {
-            $("#modalLink").prop("disabled", false);
+            $("#modalLink").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", true);
         }
     });
@@ -153,8 +154,13 @@ $(document).ready(function() {
         if (validate.uplLinkValidation($("#modalLink"))) {
             $("#modalUpload").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", false);
-        } else {
-            $("#modalUpload").prop("disabled", false);
+        } else if (!$("#modalLink").val().length<1) {
+            $("#modalUpload").css('background-color', 'transparent');
+            $("#modalUpload").prop("disabled", true);
+            $("#modalUploadBtn").prop("disabled", true);
+        }
+        else  {
+            $("#modalUpload").prop("disabled", true);
             $("#modalUploadBtn").prop("disabled", true);
         }
     });
@@ -170,5 +176,6 @@ $(document).ready(function() {
         }
         //request("post","Controller/upload.php", toSend);
     });
+    //
     
 });
