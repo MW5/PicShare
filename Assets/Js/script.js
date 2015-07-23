@@ -1,3 +1,6 @@
+//'constants' for ui coloring according to validation
+WRONGCOLOR = "orangered";
+GOODCOLOR = "lime"
 
 //validation object
 var validate = {
@@ -11,16 +14,18 @@ var validate = {
             }
         });
     },
-    rtUploadValidation: function(keyTarget, subj1, subj2, minLength1, minLength2, toBlock) {
-        $(keyTarget).keyup(function() {
-            if (subj1.val().length >= minLength1 && subj2.val().length >= minLength2){
-                $(toBlock).prop('disabled', false);
-            } else {
-                $(toBlock).prop('disabled', true);
-            }
-        });
+    //checks upload file extension 
+    checkExtension: function(toCheck) {
+        var ext = toCheck.val().split('.').pop().toLowerCase();
+        if($.inArray(ext, ['gif','png','jpg','jpeg']) === -1) {
+            toCheck.css('background-color', WRONGCOLOR);
+            return 0;
+        } else {
+            toCheck.css('background-color', GOODCOLOR);
+            return 1;
+        }
     }
-}
+};
 
 function request(type, url, dataToSend) {
     $.ajax({
@@ -103,12 +108,10 @@ $(document).ready(function() {
     $("#createAccBtn").hide();
     $("#addBtn").hide();
 
-    
     //check session
     request("post","Controller/checkSession.php");
 
 //log in
-    
     validate.rtLogInValidation($("#modalUsrData"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
     validate.rtLogInValidation($("#modalPass"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
     $("#modalLogInBtn").click(function(){
@@ -123,20 +126,23 @@ $(document).ready(function() {
 
 //fileUpload
     //write link validation function!!!
-    //to block input for links when image is chosen
     $("#modalUpload").change(function() {
-        if ($("#modalUpload").val() !=="") {
+        if ($("#modalUpload").val() !=="" && validate.checkExtension($("#modalUpload"))) {
             $("#modalLink").prop("disabled", true);
+            $("#modalUploadBtn").prop("disabled", false);
         } else {
             $("#modalLink").prop("disabled", false);
+            $("#modalUploadBtn").prop("disabled", true);
         }
     });
     //to block input for files when link is chosen
     $("#modalLink").keyup(function() {
         if ($("#modalLink").val().length > 0) {
             $("#modalUpload").prop("disabled", true);
+            $("#modalUploadBtn").prop("disabled", false);
         } else {
             $("#modalUpload").prop("disabled", false);
+            $("#modalUploadBtn").prop("disabled", true);
         }
     });
     $("#modalUploadBtn").click(function() {

@@ -154,7 +154,7 @@ class Model {
                         </form>
                     </div>
                     <div class='modal-footer'>
-                        <button type='submit' id='modalUploadBtn' class='btn btn-default' data-dismiss='modal'>$this->uploadModalUploadBtn</button>
+                        <button type='submit' id='modalUploadBtn' class='btn btn-default' data-dismiss='modal' disabled='true'>$this->uploadModalUploadBtn</button>
                       <button type='button' id='modalCloseUploadBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
