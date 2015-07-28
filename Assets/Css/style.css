@@ -10,5 +10,36 @@ p {
     width: 500px;
 }
 
+.topBtns {
+    cursor: pointer;
+}
+
+.navbar-brand {
+    cursor: default;
+}
+
+.jumbotron {
+    display: block;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.vid {
+     width: 678px;
+     height: 381px;
+}
+
+.pic {
+    width: 678px;
+    height: auto;
+}
+
+.displayedWrapper {
+    margin-bottom: 15px;
+    border: 1px solid black;
+}
+
 
 

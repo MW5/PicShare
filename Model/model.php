@@ -72,12 +72,12 @@ class Model {
     }
     public function prepareBtns() {
         //left btns
-        echo "<ul class='nav navbar-nav'>";
+        echo "<ul class='nav navbar-nav topBtns'>";
         foreach ($this->navLeftBtns as $name=>$url) {
             echo "<li><a href='$url'>$name</a></li>";
         }
         //right stuff
-        echo "</ul><ul class='nav navbar-nav navbar-right'>";
+        echo "</ul><ul class='nav navbar-nav navbar-right topBtns'>";
         foreach ($this->navRightBtns as $name=>$action) {
             if ($action == "logInBtn") {
                 echo "<li><a id='$action' data-toggle='modal' data-target='#logInModal'>$name</a></li>";

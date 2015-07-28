@@ -11,7 +11,7 @@ class LangPl extends Config {
     public $navRightBtns = array ("Zalogowany jako"=>"usrName", "Utwórz konto"=>"createAccBtn", "Dodaj"=>"addBtn",
         "Zaloguj"=>"logInBtn", "Wyloguj"=>"logOutBtn"); //action must always be the same!
     //content
-    public $content = "<p id='test'>costam</p>";
+    public $content = "";
     //modals
     public $modalCloseBtn = "Zamknij";
     //login modal

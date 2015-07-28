@@ -51,12 +51,12 @@ var validate = {
     
 };
 
-function requestFileUpl(target) {
+function requestFileUpl(target, baseData) {
     var data = new FormData();
-    jQuery.each(target[0].files, function(i, file) {
+    $.each(target[0].files, function(i, file) {
     data.append('file', file);
     });
-    jQuery.ajax({
+    $.ajax({
     url: 'Controller/fileUpload.php',
     data: data,
     cache: false,
@@ -64,8 +64,16 @@ function requestFileUpl(target) {
     processData: false,
     type: 'POST',
     success: function(data){
-        console.log(data);
-    }
+        if (data == "success") {
+            request("post","Controller/upload.php", baseData);
+        }  else if (data == "error") {
+            alert.createAlert(alert.sthWentWrong, alert.dang);
+        } else if (data == "exist") {
+            alert.createAlert(alert.fileExist, alert.dang);
+        } else if (data == "big") {
+            alert.createAlert(alert.tooBig, alert.dang);
+        }
+        }
     });
 }
 
@@ -112,8 +120,16 @@ function request(type, url, dataToSend) {
             }
             //upload
             if (url.search("upload")>=0) {
-                alert.createAlert(alert.uploadSuccess, alert.succ);
-                console.log(data);
+                if (data == 1) {
+                    alert.createAlert(alert.uploadSuccess, alert.succ);
+                    display();
+                } else {
+                    alert.createAlert(alert.sthWentWrong, alert.dang);
+                }
+            }
+            //display
+            if (url.search("display")>=0) {
+                $(".jumbotron").html(data);
             }
             
         })
@@ -129,6 +145,8 @@ var alert = {
     logOutSuccess: "Wylogowano poprawnie",
     uploadSuccess: "Dodano pomyślnie",
     sthWentWrong: "Wystąpił problem!",
+    fileExist: "Plik o takiej nazwie istnieje już w naszej bazie. Zmień nazwę!",
+    tooBig: "Plik ma zbyt duży rozmiar!",
     //types
     succ: "Success",
     info: "Info",
@@ -151,8 +169,14 @@ $(document).ready(function() {
     $("#createAccBtn").hide();
     $("#addBtn").hide();
 
-    //check session
-    request("post","Controller/checkSession.php");
+//check session
+request("post","Controller/checkSession.php");
+
+//display stuff LANGUAGE DEPENEDENT!!
+function display() {
+    request("post","Controller/displayPl.php");
+}
+display();
 
 //log in
     validate.rtLogInValidation($("#modalUsrData"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
@@ -219,7 +243,7 @@ $(document).ready(function() {
     $("#modalUploadBtn").click(function() {
         if ($("#modalUpload").val() !=="") {
             toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val()};
-            requestFileUpl($("#modalUpload"));
+            requestFileUpl($("#modalUpload"), toSend);
         }
         if ($("#modalLink").val().length > 0) {
             if ($("#modalLink").val().search("https://www.youtube.com/")>=0) {
@@ -227,9 +251,10 @@ $(document).ready(function() {
             } else {
                 queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('.be')+4);
             }
-            toSend = {upload: $("#modalLink").val(), type:"vid", text: queryLink};
+            toSend = {upload: queryLink, type:"vid", text: $("#modalUploadText").val()};
+            request("post","Controller/upload.php", toSend);
         }
-        request("post","Controller/upload.php", toSend);
+        
     });
     
 });
