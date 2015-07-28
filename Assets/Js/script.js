@@ -219,7 +219,6 @@ $(document).ready(function() {
     $("#modalUploadBtn").click(function() {
         if ($("#modalUpload").val() !=="") {
             toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val()};
-            console.log(toSend);
             requestFileUpl($("#modalUpload"));
         }
         if ($("#modalLink").val().length > 0) {

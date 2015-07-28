@@ -11,9 +11,7 @@ $usrName = $_SESSION['loggedUsr'];
 $usrId = $_SESSION['loggedUsrId'];
 
 if ($type == "pic") {
-    
-    //validate 
-    
+    $uploadData = substr($uploadData, strrpos($uploadData, "\\")+1);   
 } elseif ($type == "vid") {
     if (strpos($uploadData, "https://www.youtube.com/") === 0 ) {
         $uploadData = substr($uploadData, strpos($uploadData, "=")+1);
@@ -28,6 +26,6 @@ $query = "insert into links value (null, $usrId, '$usrName', '$type', '$text', 0
 //$uploadRequest = new dbConnect;
 //$response = $uploadRequest->connection($dbName, $query);
 
-echo $response;
+//echo $response;
 
 
