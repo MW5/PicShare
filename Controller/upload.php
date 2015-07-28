@@ -11,21 +11,22 @@ $usrName = $_SESSION['loggedUsr'];
 $usrId = $_SESSION['loggedUsrId'];
 
 if ($type == "pic") {
-    //validate link
-    //write to hdd function and format the path to upload
+    
+    //validate 
+    
 } elseif ($type == "vid") {
-    //validate picture
-    //regex the link for required format 
+    if (strpos($uploadData, "https://www.youtube.com/") === 0 ) {
+        $uploadData = substr($uploadData, strpos($uploadData, "=")+1);
+    }
+    if (strpos($uploadData, "https://youtu.be/") === 0) {
+        $uploadData = substr($uploadData, strpos($uploadData, ".be/")+4);
+    } 
 }
-
-echo $usrId;
-echo $type;
 echo $uploadData;
-echo $usrName;
 $query = "insert into links value (null, $usrId, '$usrName', '$type', '$text', 0, null)";
 
-$uploadRequest = new dbConnect;
-$response = $uploadRequest->connection($dbName, $query);
+//$uploadRequest = new dbConnect;
+//$response = $uploadRequest->connection($dbName, $query);
 
 echo $response;
 

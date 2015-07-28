@@ -1,6 +1,19 @@
 //'constants' for ui coloring according to validation
 WRONGCOLOR = "orangered";
-GOODCOLOR = "lime"
+GOODCOLOR = "lime";
+
+//
+validUpl = false;
+validLink = false;
+validText = false;
+//
+function unlockUplBtn () {
+    if ((validUpl || validLink) && validText) {
+        $("#modalUploadBtn").prop('disabled', false);
+    } else {
+        $("#modalUploadBtn").prop('disabled', true);
+    }
+}
 
 //validation object
 var validate = {
@@ -27,7 +40,7 @@ var validate = {
     },
     //validates the youtube link
     uplLinkValidation: function(toCheck) {
-        if (toCheck.val().search("https://www.youtube.com/")>=0 || toCheck.val().search("https://youtu.be/")>=0) {
+        if (toCheck.val().search("https://www.youtube.com/")===0 || toCheck.val().search("https://youtu.be/")===0) {
             toCheck.css('background-color', GOODCOLOR);
             return true;
         } else {
@@ -37,6 +50,24 @@ var validate = {
     }
     
 };
+
+function requestFileUpl(target) {
+    var data = new FormData();
+    jQuery.each(target[0].files, function(i, file) {
+    data.append('file', file);
+    });
+    jQuery.ajax({
+    url: 'Controller/fileUpload.php',
+    data: data,
+    cache: false,
+    contentType: false,
+    processData: false,
+    type: 'POST',
+    success: function(data){
+        console.log(data);
+    }
+    });
+}
 
 function request(type, url, dataToSend) {
     $.ajax({
@@ -82,6 +113,7 @@ function request(type, url, dataToSend) {
             //upload
             if (url.search("upload")>=0) {
                 alert.createAlert(alert.uploadSuccess, alert.succ);
+                console.log(data);
             }
             
         })
@@ -140,46 +172,65 @@ $(document).ready(function() {
     $("#modalUpload").change(function() {
         if ($("#modalUpload").val() !=="" && validate.checkExtension($("#modalUpload"))) {
             $("#modalLink").prop("disabled", true);
-            $("#modalUploadBtn").prop("disabled", false);
+            validUpl = true;
+            unlockUplBtn();
         }   else if ($("#modalUpload").val() =="") {
             $("#modalUpload").css('background-color', 'transparent');
-            $("#modalUploadBtn").prop("disabled", true);
-            $("#modalLink").prop("disabled", false);   
+            $("#modalLink").prop("disabled", false);
+            validUpl = false;
+            unlockUplBtn();
         }   else {
             $("#modalLink").prop("disabled", true);
-            $("#modalUploadBtn").prop("disabled", true);
+            validUpl = false;
+            unlockUplBtn();
         }
     });
     //link
     $("#modalLink").keyup(function() {
-        if (validate.uplLinkValidation($("#modalLink"))) {
+        if ($("#modalLink").val().length>0) {
             $("#modalUpload").prop("disabled", true);
-            $("#modalUploadBtn").prop("disabled", false);
-        } else if (!$("#modalLink").val().length<1) {
-            $("#modalUpload").prop("disabled", true);
-            $("#modalUploadBtn").prop("disabled", true);
+            validLink = false;
+            unlockUplBtn();
+            if (validate.uplLinkValidation($("#modalLink"))) {
+                validLink = true;
+                unlockUplBtn();
+            }
         }
         else  {
             $("#modalLink").css('background-color', 'transparent');
-            $("#modalUpload").prop("disabled", true);
+            $("#modalUpload").prop("disabled", false);
             $("#modalUploadBtn").prop("disabled", true);
+            validLink = false;
+            unlockUplBtn();
         }
     });
     //text
-    
-    //write text validation 
-    
+    $("#modalUploadText").keyup(function() {
+        if ($("#modalUploadText").val().length>0) {
+            validText = true;
+            unlockUplBtn();
+        } else {
+            validText = false;
+            unlockUplBtn();
+        }
+    });
+
     //uploadBtn
     $("#modalUploadBtn").click(function() {
         if ($("#modalUpload").val() !=="") {
             toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val()};
+            console.log(toSend);
+            requestFileUpl($("#modalUpload"));
         }
         if ($("#modalLink").val().length > 0) {
-            //ogarnac dla roznych typow linkow queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('=')+1);
-            console.log(queryLink);
+            if ($("#modalLink").val().search("https://www.youtube.com/")>=0) {
+                queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('=')+1);
+            } else {
+                queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('.be')+4);
+            }
             toSend = {upload: $("#modalLink").val(), type:"vid", text: queryLink};
         }
-        //request("post","Controller/upload.php", toSend);
+        request("post","Controller/upload.php", toSend);
     });
     
 });
