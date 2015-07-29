@@ -1,17 +1,41 @@
 //'constants' for ui coloring according to validation
 WRONGCOLOR = "orangered";
 GOODCOLOR = "lime";
+ACTIVECOLOR = "red";
+NOTACTIVECOLOR = "#9d9d9d";
 
 //
 validUpl = false;
 validLink = false;
 validText = false;
-//
+//for rt input validation
 function unlockUplBtn () {
     if ((validUpl || validLink) && validText) {
         $("#modalUploadBtn").prop('disabled', false);
     } else {
         $("#modalUploadBtn").prop('disabled', true);
+    }
+}
+
+//display all
+function display(type) {
+    toSend = {dispType: type};
+    request("post","../Controller/displayPl.php", toSend);
+}
+
+//btns show/hide for logged/logged out user
+function logged (status) {
+    if (status) {
+        $("#logInBtn").hide();
+        $("#logOutBtn").fadeIn();
+        $("#createAccBtn").hide();
+        $("#addBtn").fadeIn();
+    } else {
+        $("#logInBtn").fadeIn();
+        $("#createAccBtn").fadeIn();
+        $("#usrName").hide();
+        $("#logOutBtn").hide();
+        $("#addBtn").hide();
     }
 }
 
@@ -57,15 +81,16 @@ function requestFileUpl(target, baseData) {
     data.append('file', file);
     });
     $.ajax({
-    url: 'Controller/fileUpload.php',
+    url: '../Controller/fileUpload.php',
     data: data,
     cache: false,
     contentType: false,
     processData: false,
     type: 'POST',
     success: function(data){
+                        console.log(data);
         if (data == "success") {
-            request("post","Controller/upload.php", baseData);
+            request("post","../Controller/upload.php", baseData);
         }  else if (data == "error") {
             alert.createAlert(alert.sthWentWrong, alert.dang);
         } else if (data == "exist") {
@@ -88,10 +113,7 @@ function request(type, url, dataToSend) {
             if (url.search("logIn")>=0) {
                 if (data !== "noUser") {
                     $("#usrName").html(data).fadeIn();
-                    $("#logInBtn").hide();
-                    $("#logOutBtn").fadeIn();
-                    $("#createAccBtn").hide();
-                    $("#addBtn").fadeIn();
+                    logged(true);
                     alert.createAlert(alert.logInSuccess, alert.succ);
                 } else {
                     alert.createAlert(alert.logInFail, alert.warn);
@@ -101,34 +123,28 @@ function request(type, url, dataToSend) {
             if (url.search("checkSession")>=0) {
                 if (data !== "noUser") {
                     $("#usrName").html(data).fadeIn();
-                    $("#addBtn").hide();
-                    $("#logOutBtn").fadeIn();
-                    $("#addBtn").fadeIn();
+                    logged(true);
                 } else {
-                    $("#logInBtn").fadeIn();
-                    $("#createAccBtn").fadeIn();
+                    logged(false);
                 }
             }
             //logOut
             if (url.search("logOut")>=0) {
-                $("#usrName").hide();
-                $("#logOutBtn").hide();
-                $("#createAccBtn").fadeIn();
-                $("#logInBtn").fadeIn();
-                $("#addBtn").hide();
+                logged(false);
                 alert.createAlert(alert.logOutSuccess, alert.succ);
             }
             //upload
             if (url.search("upload")>=0) {
                 if (data == 1) {
                     alert.createAlert(alert.uploadSuccess, alert.succ);
-                    display();
+                    display("all");
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
             }
             //display
-            if (url.search("display")>=0) {
+            if (url.search("displayPl")>=0) {
+                console.log(data);
                 $(".jumbotron").html(data);
             }
             
@@ -169,26 +185,39 @@ $(document).ready(function() {
     $("#createAccBtn").hide();
     $("#addBtn").hide();
 
-//check session
-request("post","Controller/checkSession.php");
+//again bypassing some bootstrap problem
+//    $(".topBtns").css("color", NOTACTIVECOLOR);
+    $("#all").css("color", ACTIVECOLOR);
 
-//display stuff LANGUAGE DEPENEDENT!!
-function display() {
-    request("post","Controller/displayPl.php");
-}
-display();
+//check session
+request("post","../Controller/checkSession.php");
+
+display("all");
+
+//display good
+$("#highScore").click(function() {
+    $("#all").css("color", NOTACTIVECOLOR);
+    $("#highScore").css("color", ACTIVECOLOR);
+    display("highScore");
+})
+//display all after click
+$("#all").click(function() {
+    $("#all").css("color", ACTIVECOLOR);
+    $("#highScore").css("color", NOTACTIVECOLOR);
+    display("all");
+})
 
 //log in
     validate.rtLogInValidation($("#modalUsrData"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
     validate.rtLogInValidation($("#modalPass"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
     $("#modalLogInBtn").click(function(){
         toSend =  {usrData: $("#modalUsrData").val(), pass: $("#modalPass").val()};
-        request("post","Controller/logIn.php", toSend);
+        request("post","../Controller/logIn.php", toSend);
     });
 
 //log out
     $("#logOutBtn").click(function(){
-        request("post","Controller/logOut.php");
+        request("post","../Controller/logOut.php");
     });
 
 //fileUpload
@@ -252,7 +281,7 @@ display();
                 queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('.be')+4);
             }
             toSend = {upload: queryLink, type:"vid", text: $("#modalUploadText").val()};
-            request("post","Controller/upload.php", toSend);
+            request("post","../Controller/upload.php", toSend);
         }
         
     });

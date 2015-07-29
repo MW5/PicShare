@@ -1,13 +1,13 @@
 <?php
 
-require "Controller/config.php";
+require "../Controller/config.php";
 
 class LangPl extends Config {
     public $title = "Obrazkownia";
     //body
     public $websiteName = "Obrazki dla Ciebie!";
     //nav
-    public $navLeftBtns = array ("Główna"=>"index.php", "Poczekalnia"=>"waitingRoom.php"); 
+    public $navLeftBtns = array ("Wysoko ocenione"=>"highScore", "Wszystkie"=>"all"); 
     public $navRightBtns = array ("Zalogowany jako"=>"usrName", "Utwórz konto"=>"createAccBtn", "Dodaj"=>"addBtn",
         "Zaloguj"=>"logInBtn", "Wyloguj"=>"logOutBtn"); //action must always be the same!
     //content

@@ -29,11 +29,24 @@ if (isset($_SESSION['loggedUsrId'])) {
     && $imageFileType != "gif" ) {
         $uploadOk = 0;
     }
-     //Check if $uploadOk is set to 0 by an error
+    
+    $noExt = basename($_FILES["file"]["name"], ".".$imageFileType);
+    
+    // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
     // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+            
+            $picPage = fopen("../UploadedPicPages/$noExt.php", "w");
+                //WHY YOU NOT WORK BASTARDO!?
+            $pageContent = '<!DOCTYPE html>
+                            <?php
+                            require "../View/main_langPl.php"; 
+                            $picPage = new LangPl;
+                            $picPage->display();';
+            fwrite($picPage, $pageContent);
+            fclose($picPage);
             echo "success";
         } else {
             echo "error";

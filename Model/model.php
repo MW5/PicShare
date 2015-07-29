@@ -6,6 +6,7 @@ class Model {
     public $styleAddress;
     public $jsAddress;
     public $bootstrapAddress;
+    public $bootstrapScriptAddress;
     public $jqueryAddress;
     public $iconAddress;
     public $logIn = "logIn";
@@ -63,7 +64,7 @@ class Model {
     public function prepareBodyBeforeBtns() {
             //nav
         echo "<body>
-                <nav class='navbar navbar-inverse'>
+                <nav class='navbar navbar-inverse navbar-fixed-top'>
                 <div class='container-fluid'>
                   <div class='navbar-header'>
                     <a class='navbar-brand'>$this->websiteName</a>
@@ -72,19 +73,19 @@ class Model {
     }
     public function prepareBtns() {
         //left btns
-        echo "<ul class='nav navbar-nav topBtns'>";
-        foreach ($this->navLeftBtns as $name=>$url) {
-            echo "<li><a href='$url'>$name</a></li>";
+        echo "<ul class='nav navbar-nav'>";
+        foreach ($this->navLeftBtns as $name=>$action) {
+            echo "<li><a id='$action' class='topBtns'>$name</a></li>";
         }
         //right stuff
         echo "</ul><ul class='nav navbar-nav navbar-right topBtns'>";
         foreach ($this->navRightBtns as $name=>$action) {
             if ($action == "logInBtn") {
-                echo "<li><a id='$action' data-toggle='modal' data-target='#logInModal'>$name</a></li>";
+                echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#logInModal'>$name</a></li>";
             }elseif ($action == 'addBtn') {
-                echo "<li><a id='$action' data-toggle='modal' data-target='#uploadModal'>$name</a></li>";
+                echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#uploadModal'>$name</a></li>";
             } else {
-                echo "<li><a id='$action'>$name</a></li>";
+                echo "<li><a id='$action' class='topBtns'>$name</a></li>";
             }
         }
         echo "</ul>";
