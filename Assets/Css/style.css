@@ -32,13 +32,11 @@ a:hover {
 }
 
 .vid {
-     width: 678px;
-     height: 381px;
+     //same as pic
 }
 
 .pic {
-    width: 95%;
-    height: auto;
+    //style on the img object to increase efficiency
 }
 
 .displayedWrapper {

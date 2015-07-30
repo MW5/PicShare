@@ -37,7 +37,7 @@ if (isset($_SESSION['loggedUsrId'])) {
     // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            $content = "<a href='../Public/index.php'><img class='clickedPic' src='$target_file'></a>";
+            $content = "<a href='../Public/index.php'><img width='80%' height='auto' class='clickedPic' src='$target_file'></a>";
             $picPage = fopen("../UploadedPicPages/$noExt.php", "w");
             $pageContent = '<!DOCTYPE html>
                             <?php

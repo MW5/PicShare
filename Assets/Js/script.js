@@ -20,7 +20,7 @@ function unlockUplBtn () {
 //checks whether to display all or one
 function displayMode () {
     shortAddr = (window.location.href);
-    if (shortAddr.substring(shortAddr.indexOf("Public")+7) == "index.php") {
+    if (shortAddr.indexOf("Public") > 0) {
         return "all";
     } else {
         return "one";
@@ -129,6 +129,7 @@ function request(type, url, dataToSend) {
                     $("#usrName").html(data).fadeIn();
                     logged(true);
                     alert.createAlert(alert.logInSuccess, alert.succ);
+                    display(displayMode());
                 } else {
                     alert.createAlert(alert.logInFail, alert.warn);
                 }
@@ -141,9 +142,11 @@ function request(type, url, dataToSend) {
                 } else {
                     logged(false);
                 }
+                display(displayMode());
             }
             //logOut
             if (url.search("logOut")>=0) {
+                display(displayMode());
                 logged(false);
                 alert.createAlert(alert.logOutSuccess, alert.succ);
             }
@@ -151,7 +154,7 @@ function request(type, url, dataToSend) {
             if (url.search("upload")>=0) {
                 if (data == 1) {
                     alert.createAlert(alert.uploadSuccess, alert.succ);
-                    display("all");
+                    display(displayMode());
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
@@ -160,7 +163,17 @@ function request(type, url, dataToSend) {
             if (url.search("displayPl")>=0) {
                 $(".jumbotron").html(data);
             }
-            
+            //points
+            if (url.search("points")>=0) {
+                if (data == "11") {
+                    $(".plus").fadeOut();
+                    $(".minus").fadeOut();
+                    alert.createAlert(alert.uploadSuccess, alert.succ);
+                    display(displayMode());
+                } else {
+                    alert.createAlert(alert.sthWentWrong, alert.dang);
+                }
+            }
         })
         .fail(function() {
             alert.createAlert(alert.sthWentWrong, alert.dang);
@@ -176,6 +189,7 @@ var alert = {
     sthWentWrong: "Wystąpił problem!",
     fileExist: "Plik o takiej nazwie istnieje już w naszej bazie. Zmień nazwę!",
     tooBig: "Plik ma zbyt duży rozmiar!",
+    pointSuccess: "Oddano głos",
     //types
     succ: "Success",
     info: "Info",
@@ -301,5 +315,17 @@ $("#all").click(function() {
         }
         
     });
+    
+    //add and remove points
+    $(".jumbotron").on("click", ".plus", function() {
+        toSend = {grade: "plus", target:$(this).attr('id')};
+        request("post","../Controller/points.php", toSend);
+    })
+    $(".jumbotron").on("click", ".minus", function() {
+        toSend = {grade: "minus", target:$(this).attr('id')};
+        request("post","../Controller/points.php", toSend);
+    })
+    
+    
     
 });

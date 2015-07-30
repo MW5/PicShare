@@ -24,8 +24,8 @@ if (isset($_SESSION['loggedUsrId'])) {
 
     $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$type', '$text', 0, null)";
 
-    $uploadRequest = new dbConnect;
-    $response = $uploadRequest->connection($dbName, $query);
+    $gradeRequest = new dbConnect;
+    $response = $gradeRequest->connection($dbName, $query);
 
     echo $response;
 }
