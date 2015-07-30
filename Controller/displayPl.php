@@ -8,9 +8,12 @@ $points = " Punkty ";
 $dbName = "picshare";
 
 if (htmlspecialchars($_POST['dispType'])=="all") {
-    $query = "select * from links";
-} else {
+    $query = "select * from links order by linkid desc";
+} else if (htmlspecialchars($_POST['dispType'])=="highScore") {
     $query = "select * from links where points>10";
+} else {
+    $picName = htmlspecialchars($_POST['name']);
+    $query = "select * from links where (path regexp '^$picName".".[a-z]')";
 }
 
 $displayRequest = new dbConnect;

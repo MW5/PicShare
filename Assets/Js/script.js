@@ -17,9 +17,24 @@ function unlockUplBtn () {
     }
 }
 
+//checks whether to display all or one
+function displayMode () {
+    shortAddr = (window.location.href);
+    if (shortAddr.substring(shortAddr.indexOf("Public")+7) == "index.php") {
+        return "all";
+    } else {
+        return "one";
+    }
+}
+
 //display all
-function display(type) {
-    toSend = {dispType: type};
+function display(type, mode) {
+    if (mode == "all") {
+        toSend = {dispType: type};
+    } else {
+        picName = shortAddr.slice(shortAddr.indexOf("PicPages")+9, -4);
+        toSend = {dispType: type, name: picName};
+    }
     request("post","../Controller/displayPl.php", toSend);
 }
 
@@ -88,7 +103,6 @@ function requestFileUpl(target, baseData) {
     processData: false,
     type: 'POST',
     success: function(data){
-                        console.log(data);
         if (data == "success") {
             request("post","../Controller/upload.php", baseData);
         }  else if (data == "error") {
@@ -144,7 +158,6 @@ function request(type, url, dataToSend) {
             }
             //display
             if (url.search("displayPl")>=0) {
-                console.log(data);
                 $(".jumbotron").html(data);
             }
             
@@ -192,20 +205,23 @@ $(document).ready(function() {
 //check session
 request("post","../Controller/checkSession.php");
 
-display("all");
+display(displayMode());
+
+
 
 //display good
 $("#highScore").click(function() {
     $("#all").css("color", NOTACTIVECOLOR);
     $("#highScore").css("color", ACTIVECOLOR);
     display("highScore");
-})
+});
+
 //display all after click
 $("#all").click(function() {
     $("#all").css("color", ACTIVECOLOR);
     $("#highScore").css("color", NOTACTIVECOLOR);
     display("all");
-})
+});
 
 //log in
     validate.rtLogInValidation($("#modalUsrData"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));

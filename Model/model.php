@@ -67,7 +67,7 @@ class Model {
                 <nav class='navbar navbar-inverse navbar-fixed-top'>
                 <div class='container-fluid'>
                   <div class='navbar-header'>
-                    <a class='navbar-brand'>$this->websiteName</a>
+                    <a class='navbar-brand' href='../Public/index.php'>$this->websiteName</a>
                   </div>
                   <div>";  
     }
@@ -75,7 +75,7 @@ class Model {
         //left btns
         echo "<ul class='nav navbar-nav'>";
         foreach ($this->navLeftBtns as $name=>$action) {
-            echo "<li><a id='$action' class='topBtns'>$name</a></li>";
+        echo "<li><a id='$action' class='topBtns'>$name</a></li>";
         }
         //right stuff
         echo "</ul><ul class='nav navbar-nav navbar-right topBtns'>";

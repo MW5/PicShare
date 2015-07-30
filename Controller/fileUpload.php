@@ -37,13 +37,16 @@ if (isset($_SESSION['loggedUsrId'])) {
     // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            
+            $content = "<a href='../Public/index.php'><img class='clickedPic' src='$target_file'></a>";
             $picPage = fopen("../UploadedPicPages/$noExt.php", "w");
-                //WHY YOU NOT WORK BASTARDO!?
             $pageContent = '<!DOCTYPE html>
                             <?php
-                            require "../View/main_langPl.php"; 
-                            $picPage = new LangPl;
+                            require "../View/picPage_langPl.php"; 
+                            class PicPage extends PicLangPl {
+                                public $content = "'.$content.'";
+                                public $navLeftBtns = array();
+                            }
+                            $picPage = new PicPage;
                             $picPage->display();';
             fwrite($picPage, $pageContent);
             fclose($picPage);
