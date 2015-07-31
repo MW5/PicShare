@@ -27,4 +27,11 @@ class LangPl extends Config {
     public $uploadModalLinkLabel = "Wklej link do filmiku z You Tube";
     public $uploadModalUploadBtn = "Dodaj";
     
+    //register modal
+    public $registerModalHeading = "Zarejestruj konto";
+    public $registerModalEmailLabel = "Adres E-mail";
+    public $registerModalNameLabel = "Nazwa konta";
+    public $registerModalPassLabel = "Hasło (minimum 6 znaków, conajmniej jedna litera i cyfra)";
+    public $registerModalBtn = "Zarejestruj";
+    
 }

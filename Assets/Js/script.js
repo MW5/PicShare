@@ -4,11 +4,11 @@ GOODCOLOR = "lime";
 ACTIVECOLOR = "red";
 NOTACTIVECOLOR = "#9d9d9d";
 
-//
+//upload validation
 validUpl = false;
 validLink = false;
 validText = false;
-//for rt input validation
+//for rt upload input validation
 function unlockUplBtn () {
     if ((validUpl || validLink) && validText) {
         $("#modalUploadBtn").prop('disabled', false);
@@ -17,6 +17,18 @@ function unlockUplBtn () {
     }
 }
 
+//register validation
+validEmail = false;
+validName = false;
+validPass = false;
+//for rt register input validation
+function unlockRegBtn () {
+    if (validEmail && validName && validPass) {
+        $("#modalRegisterBtn").prop('disabled', false);
+    } else {
+        $("#modalRegisterBtn").prop('disabled', true);
+    }
+}
 //checks whether to display all or one
 function displayMode () {
     shortAddr = (window.location.href);
@@ -86,6 +98,58 @@ var validate = {
             toCheck.css('background-color', WRONGCOLOR);
             return false;
         }
+    },
+    //validates register mail address
+    regMailValidation: function(toCheck) {
+        re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        if (re.test(toCheck.val())) {
+            toCheck.css('background-color', GOODCOLOR);
+            return true;
+        } else {
+            toCheck.css('background-color', WRONGCOLOR);
+            return false;
+        }
+    },
+    //validates fields where only alphanumerics are allowed
+    nameText: function(toCheck) {
+        re = /^[a-z0-9]+$/i;
+        if (re.test(toCheck.val())) {
+            toCheck.css('background-color', GOODCOLOR);
+            return true;
+        } else {
+            toCheck.css('background-color', WRONGCOLOR);
+            return false;
+        }
+    },
+    pass: function(toCheck) {
+        re = /^[a-z0-9]+$/i; //only alphanumerics
+        re2 = /\D/; //check for at least one letter
+        re3 =  /\d/; //check for at least one number
+        if (toCheck.val().length >=6 && re.test(toCheck.val()) && re2.test(toCheck.val()) && re3.test(toCheck.val())) {
+            toCheck.css('background-color', GOODCOLOR);
+            return true;
+        } else {
+            toCheck.css('background-color', WRONGCOLOR);
+            return false;
+        }
+    },
+    //rt validation for similiar text related input
+    rtTextValidation: function(toValidate, internalValidation, valVar ,btnToUnlock) {
+        toValidate.keyup(function() {
+            if (toValidate.val().length>0) {
+                window[valVar] = false;
+                btnToUnlock();
+                if (internalValidation(toValidate)) {
+                    window[valVar] = true;
+                    btnToUnlock();
+                }
+            }
+            else  {
+                toValidate.css('background-color', 'transparent');
+                window[valVar] = false;
+                btnToUnlock();
+            }
+        });
     }
     
 };
@@ -178,7 +242,7 @@ function request(type, url, dataToSend) {
         .fail(function() {
             alert.createAlert(alert.sthWentWrong, alert.dang);
         })
-}
+};
 
 var alert = {
     //text
@@ -202,7 +266,7 @@ var alert = {
             $("#alert"+type).fadeOut();
         },2000);
     }
-}
+};
 
 $(document).ready(function() {
 //stupid bootstrap (or my lack of knowledge) makes me hide stuff like this because when I use display none in css the layout gets rekt
@@ -213,15 +277,12 @@ $(document).ready(function() {
     $("#addBtn").hide();
 
 //again bypassing some bootstrap problem
-//    $(".topBtns").css("color", NOTACTIVECOLOR);
+    $(".topBtns").css("color", NOTACTIVECOLOR);
     $("#all").css("color", ACTIVECOLOR);
 
 //check session
 request("post","../Controller/checkSession.php");
-
 display(displayMode());
-
-
 
 //display good
 $("#highScore").click(function() {
@@ -282,21 +343,12 @@ $("#all").click(function() {
         else  {
             $("#modalLink").css('background-color', 'transparent');
             $("#modalUpload").prop("disabled", false);
-            $("#modalUploadBtn").prop("disabled", true);
             validLink = false;
             unlockUplBtn();
         }
     });
     //text
-    $("#modalUploadText").keyup(function() {
-        if ($("#modalUploadText").val().length>0) {
-            validText = true;
-            unlockUplBtn();
-        } else {
-            validText = false;
-            unlockUplBtn();
-        }
-    });
+    validate.rtTextValidation($("#modalUploadText"), validate.nameText, "validText", unlockUplBtn);
 
     //uploadBtn
     $("#modalUploadBtn").click(function() {
@@ -312,8 +364,7 @@ $("#all").click(function() {
             }
             toSend = {upload: queryLink, type:"vid", text: $("#modalUploadText").val()};
             request("post","../Controller/upload.php", toSend);
-        }
-        
+        }  
     });
     
     //add and remove points
@@ -324,8 +375,32 @@ $("#all").click(function() {
     $(".jumbotron").on("click", ".minus", function() {
         toSend = {grade: "minus", target:$(this).attr('id')};
         request("post","../Controller/points.php", toSend);
-    })
+    });
     
+    //registration
+    validate.rtTextValidation($("#modalRegisterEmail"), validate.regMailValidation, "validEmail", unlockRegBtn);
+    
+    //name
+    validate.rtTextValidation($("#modalRegisterName"), validate.nameText, "validName", unlockRegBtn);
+    
+    //password
+    validate.rtTextValidation($("#modalRegisterPwd"), validate.pass, "validPass", unlockRegBtn);
+    //WRITE PASSWORD VALIDATION 
+//    $("#modalRegisterName").keyup(function() {
+//        if ($("#modalRegisterName").val().length>0) {
+//            if (validate.nameText($("#modalRegisterName"))) {
+//                validName = true;
+//                unlockRegBtn();
+//            } else {
+//                validName = false;
+//                unlockRegBtn();
+//            }
+//        } else {
+//            $("#modalRegisterName").css('background-color', 'transparent');
+//            validName = false;
+//            unlockRegBtn();
+//        }
+//    });
     
     
 });

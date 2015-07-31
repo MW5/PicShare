@@ -36,7 +36,8 @@ a:hover {
 }
 
 .pic {
-    //style on the img object to increase efficiency
+    width: 80%;
+    height: auto;
 }
 
 .displayedWrapper {

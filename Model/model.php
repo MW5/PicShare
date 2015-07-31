@@ -33,6 +33,13 @@ class Model {
             public $uploadModalFileLabel;
             public $uploadModalLinkLabel;
             public $uploadModalUploadBtn;
+            
+            //register modal
+            public $registerModalHeading;
+            public $registerModalEmailLabel;
+            public $registerModalNameLabel;
+            public $registerModalPassLabel;
+            public $registerModalBtn;
         
     //set
     public function __set($name, $value) {
@@ -46,6 +53,7 @@ class Model {
         $this->prepareBodyAfterBtns();
         $this->prepareModalLogIn();
         $this->prepareModalUpload();
+        $this->prepareModalRegister();
         $this->prepareAlerts();
     }
     
@@ -82,8 +90,10 @@ class Model {
         foreach ($this->navRightBtns as $name=>$action) {
             if ($action == "logInBtn") {
                 echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#logInModal'>$name</a></li>";
-            }elseif ($action == 'addBtn') {
+            } elseif ($action == 'addBtn') {
                 echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#uploadModal'>$name</a></li>";
+            } elseif ($action == 'createAccBtn') {
+                echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#registerModal'>$name</a></li>";
             } else {
                 echo "<li><a id='$action' class='topBtns'>$name</a></li>";
             }
@@ -157,6 +167,38 @@ class Model {
                     <div class='modal-footer'>
                         <button type='submit' id='modalUploadBtn' class='btn btn-default' data-dismiss='modal' disabled='true'>$this->uploadModalUploadBtn</button>
                       <button type='button' id='modalCloseUploadBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
+                    </div>
+                  </div>
+                </div>
+              </div>";
+    }
+    public function prepareModalRegister() {
+        echo"<div id='registerModal' class='modal fade' role='dialog'>
+                <div class='modal-dialog'>
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                      <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                      <h4 class='modal-title'>$this->registerModalHeading</h4>
+                    </div>
+                    <div class='modal-body'>
+                        <form role='form'>
+                          <div class='form-group'>
+                            <label for='email'>$this->registerModalEmailLabel:</label>
+                            <input type='email' class='form-control' id='modalRegisterEmail'>
+                          </div>
+                          <div class='form-group'>
+                            <label for='text'>$this->registerModalNameLabel:</label>
+                            <input type='text' class='form-control' id='modalRegisterName'>
+                          </div>
+                          <div class='form-group'>
+                            <label for='pwd'>$this->registerModalPassLabel:</label>
+                            <input type='password' class='form-control' id='modalRegisterPwd'>
+                          </div>
+                        </form>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='submit' id='modalRegisterBtn' class='btn btn-default' data-dismiss='modal' disabled='true'>$this->registerModalBtn</button>
+                      <button type='button' id='modalCloseRegisterBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
                 </div>
