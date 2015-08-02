@@ -22,10 +22,11 @@ if (isset($_SESSION['loggedUsrId'])) {
         } 
     }
 
-    $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$type', '$text', 0, null)";
-
-    $gradeRequest = new dbConnect;
-    $response = $gradeRequest->connection($dbName, $query);
+    if (($type == "pic" || $type == "vid") && strlen($pathData)>0 && strlen($text) >0) {
+        $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$type', '$text', 0, null)";
+        $uploadRequest = new dbConnect;
+        $response = $uploadRequest->connection($dbName, $query);
+    }
 
     echo $response;
 }

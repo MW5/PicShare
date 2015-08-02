@@ -167,13 +167,13 @@ function requestFileUpl(target, baseData) {
     processData: false,
     type: 'POST',
     success: function(data){
-        if (data == "success") {
+        if (data === "success") {
             request("post","../Controller/upload.php", baseData);
-        }  else if (data == "error") {
+        }  else if (data === "error") {
             alert.createAlert(alert.sthWentWrong, alert.dang);
-        } else if (data == "exist") {
+        } else if (data === "exist") {
             alert.createAlert(alert.fileExist, alert.dang);
-        } else if (data == "big") {
+        } else if (data === "big") {
             alert.createAlert(alert.tooBig, alert.dang);
         }
         }
@@ -229,7 +229,7 @@ function request(type, url, dataToSend) {
             }
             //points
             if (url.search("points")>=0) {
-                if (data == "11") {
+                if (data === "11") {
                     $(".plus").fadeOut();
                     $(".minus").fadeOut();
                     alert.createAlert(alert.uploadSuccess, alert.succ);
@@ -237,6 +237,19 @@ function request(type, url, dataToSend) {
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
+            }
+            //registerAcc
+            if (url.search("createAcc")>=0){
+                if (data == 1) {
+                    alert.createAlert(alert.registerSuccess, alert.succ);
+                }  else if (data === "emailExists") {
+                    alert.createAlert(alert.emailExists, alert.dang);
+                }  else if (data === "nameExists") {
+                    alert.createAlert(alert.nameExists, alert.dang);
+                } else {
+                    alert.createAlert(alert.sthWentWrong, alert.dang);
+                }
+                console.log(data);
             }
         })
         .fail(function() {
@@ -254,6 +267,9 @@ var alert = {
     fileExist: "Plik o takiej nazwie istnieje już w naszej bazie. Zmień nazwę!",
     tooBig: "Plik ma zbyt duży rozmiar!",
     pointSuccess: "Oddano głos",
+    emailExists: "Na podany adres e-mail zarejestrowano już konto!",
+    nameExists: "Użytkownik o podanej nazwie już istnieje",
+    registerSuccess: "Zarejestrowano konto, aktywuj je linkiem otrzymanym na maila",
     //types
     succ: "Success",
     info: "Info",
@@ -279,6 +295,23 @@ $(document).ready(function() {
 //again bypassing some bootstrap problem
     $(".topBtns").css("color", NOTACTIVECOLOR);
     $("#all").css("color", ACTIVECOLOR);
+    
+//modal submit on enter
+$("#logInModal").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#modalLogInBtn").click();
+    }
+});
+$("#uploadModal").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#modalUploadBtn").click();
+    }
+});
+$("#registerModal").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#modalRegisterBtn").click();
+    }
+});
 
 //check session
 request("post","../Controller/checkSession.php");
@@ -371,7 +404,7 @@ $("#all").click(function() {
     $(".jumbotron").on("click", ".plus", function() {
         toSend = {grade: "plus", target:$(this).attr('id')};
         request("post","../Controller/points.php", toSend);
-    })
+    });
     $(".jumbotron").on("click", ".minus", function() {
         toSend = {grade: "minus", target:$(this).attr('id')};
         request("post","../Controller/points.php", toSend);
@@ -384,23 +417,11 @@ $("#all").click(function() {
     validate.rtTextValidation($("#modalRegisterName"), validate.nameText, "validName", unlockRegBtn);
     
     //password
-    validate.rtTextValidation($("#modalRegisterPwd"), validate.pass, "validPass", unlockRegBtn);
-    //WRITE PASSWORD VALIDATION 
-//    $("#modalRegisterName").keyup(function() {
-//        if ($("#modalRegisterName").val().length>0) {
-//            if (validate.nameText($("#modalRegisterName"))) {
-//                validName = true;
-//                unlockRegBtn();
-//            } else {
-//                validName = false;
-//                unlockRegBtn();
-//            }
-//        } else {
-//            $("#modalRegisterName").css('background-color', 'transparent');
-//            validName = false;
-//            unlockRegBtn();
-//        }
-//    });
+    validate.rtTextValidation($("#modalRegisterPass"), validate.pass, "validPass", unlockRegBtn);
     
-    
+    //registerBtn
+    $("#modalRegisterBtn").click(function() {
+        toSend = {email: $("#modalRegisterEmail").val(), name: $("#modalRegisterName").val(), pass: $("#modalRegisterPass").val()};
+        request("post","../Controller/createAcc.php", toSend);
+    });
 });

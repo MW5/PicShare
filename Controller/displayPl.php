@@ -59,8 +59,8 @@ for ($i=0; $i<$numOfMatches; $i++) {
         $minus = "";
         
         if  (isset($_SESSION['loggedUsrId'])) {
-            $plus = "<a id='p".$toDisplay['path']."' class='plus'>ADDPOINT</a>";
-            $minus = "<a id='m".$toDisplay['path']."' class='minus'>REMOVEPOINT</a>";
+            $plus = "<a id='p".$toDisplay['path']."' class='plus'><img src='../Assets/Img/plusBtn.png'></a>";
+            $minus = "<a id='m".$toDisplay['path']."' class='minus'><img src='../Assets/Img/minusBtn.png'></a>";
             for ($j=0; $j<$numOfGrades; $j++) {
                 if ($displayed[$i] == $grades[$j]) {
                     $plus = "";

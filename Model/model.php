@@ -192,7 +192,7 @@ class Model {
                           </div>
                           <div class='form-group'>
                             <label for='pwd'>$this->registerModalPassLabel:</label>
-                            <input type='password' class='form-control' id='modalRegisterPwd'>
+                            <input type='password' class='form-control' id='modalRegisterPass'>
                           </div>
                         </form>
                     </div>
