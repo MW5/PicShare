@@ -2,6 +2,7 @@
 session_start();
 
 require "dbConnect.php";
+require "../View/main_langPl.php";
 
 $dbName = "picshare";
 
@@ -47,9 +48,22 @@ if (strlen($pass)>=6 &&preg_match($passRe1, $pass) && preg_match($passRe2, $pass
 }
 
 if ($valid == 3) {
-    $registerQuery = "insert into users value (null, '$email', '$name', '$pass')";
+    //CHANGE ACTIVATION LINK ADDRESS IF NEEDED!!!
+    $activationLink = htmlspecialchars($_SERVER['SERVER_NAME']."/projects/PicShare/Controller/regConfirmation.php?activated=".sha1($pass));
+    $sha1Pass = sha1($pass);
+    $registerQuery = "insert into users value (null, '$email', '$name', '$sha1Pass', '$sha1Pass')";
     $response = $createAccRequest->connection($dbName, $registerQuery);
-    echo $response;
+    if ($response==1) {
+        //UNCOMMENT AND TEST WHEN ON A SERVER!!!
+//        $to      = "$email";
+//        $subject = "$mailSubject";
+//        $message = "$activationLink";
+//        $headers = "From: '$mailFrom\r\n'" . phpversion();
+//        mail($to, $subject, $message, $headers);
+        echo $response;
+    } else {
+        echo "err";
+    }
 }
 
 

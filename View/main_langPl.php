@@ -34,4 +34,9 @@ class LangPl extends Config {
     public $registerModalPassLabel = "Hasło (minimum 6 znaków, conajmniej jedna litera i cyfra)";
     public $registerModalBtn = "Zarejestruj";
     
+    //mail
+    public $mailSubject = "Potwierdź rejestrację"; //gdzie?
+    public $mailContent = "";
+    public $mailFrom = "Nazwa portalu";
+    
 }

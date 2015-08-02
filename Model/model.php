@@ -11,6 +11,12 @@ class Model {
     public $iconAddress;
     public $logIn = "logIn";
     public $logOut = "logOut";
+    
+    //mail stuff
+    public $mailSubject = "";
+    public $mailContent = "";
+    public $mailFrom = "";
+    
     //body
         //nav
         public $websiteName;

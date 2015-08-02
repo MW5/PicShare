@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedUsrId'])) {
         $response = $gradeRequest->connection($dbName, $query);
         echo $response;
     }
-
+    
     echo $usrGradeQueryResponse;
 
 }

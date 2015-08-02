@@ -27,7 +27,6 @@ if (isset($_SESSION['loggedUsrId'])) {
         $uploadRequest = new dbConnect;
         $response = $uploadRequest->connection($dbName, $query);
     }
-
     echo $response;
 }
 

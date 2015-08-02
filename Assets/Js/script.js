@@ -29,6 +29,7 @@ function unlockRegBtn () {
         $("#modalRegisterBtn").prop('disabled', true);
     }
 }
+
 //checks whether to display all or one
 function displayMode () {
     shortAddr = (window.location.href);
@@ -222,6 +223,7 @@ function request(type, url, dataToSend) {
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
+                console.log(data);
             }
             //display
             if (url.search("displayPl")>=0) {
@@ -243,11 +245,13 @@ function request(type, url, dataToSend) {
                 if (data == 1) {
                     alert.createAlert(alert.registerSuccess, alert.succ);
                 }  else if (data === "emailExists") {
-                    alert.createAlert(alert.emailExists, alert.dang);
+                    alert.createAlert(alert.emailExists, alert.warn);
                 }  else if (data === "nameExists") {
-                    alert.createAlert(alert.nameExists, alert.dang);
+                    alert.createAlert(alert.nameExists, alert.warn);
+                } else if (data === "emailExistsnameExists") {
+                    alert.createAlert(alert.userExists, alert.warn);
                 } else {
-                    alert.createAlert(alert.sthWentWrong, alert.dang);
+                    alert.createAlert(alert.sthWentWrong, alert.warn);
                 }
                 console.log(data);
             }
@@ -270,6 +274,7 @@ var alert = {
     emailExists: "Na podany adres e-mail zarejestrowano już konto!",
     nameExists: "Użytkownik o podanej nazwie już istnieje",
     registerSuccess: "Zarejestrowano konto, aktywuj je linkiem otrzymanym na maila",
+    userExists: "Użytkownik o podanym adresie e-mail oraz nazwie już istnieje",
     //types
     succ: "Success",
     info: "Info",
@@ -280,7 +285,7 @@ var alert = {
         $("#alert"+type).html(text).fadeIn();
         setTimeout(function() {
             $("#alert"+type).fadeOut();
-        },2000);
+        },4000);
     }
 };
 

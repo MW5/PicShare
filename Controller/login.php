@@ -3,7 +3,7 @@ require "dbConnect.php";
 
 $dbName = "picshare";
 $logData = htmlspecialchars($_POST['usrData']);
-$logPass = htmlspecialchars($_POST['pass']);
+$logPass = sha1(htmlspecialchars($_POST['pass']));
 $query = "select * from users where (usrname='$logData' and usrpass='$logPass') or (usrmail='$logData' and usrpass='$logPass')";
 
 $logInRequest = new dbConnect;
