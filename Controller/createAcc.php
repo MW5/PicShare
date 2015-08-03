@@ -49,9 +49,10 @@ if (strlen($pass)>=6 &&preg_match($passRe1, $pass) && preg_match($passRe2, $pass
 
 if ($valid == 3) {
     //CHANGE ACTIVATION LINK ADDRESS IF NEEDED!!!
-    $activationLink = htmlspecialchars($_SERVER['SERVER_NAME']."/projects/PicShare/Controller/regConfirmation.php?activated=".sha1($pass));
+    $hash = md5( rand(0,1000) ); // this is going to be sent in email
+    $activationLink = htmlspecialchars($_SERVER['SERVER_NAME']."/projects/PicShare/Controller/regConfirmation.php?activated=".$hash);
     $sha1Pass = sha1($pass);
-    $registerQuery = "insert into users value (null, '$email', '$name', '$sha1Pass', '$sha1Pass')";
+    $registerQuery = "insert into users value (null, '$email', '$name', '$sha1Pass', '$hash', 0)";
     $response = $createAccRequest->connection($dbName, $registerQuery);
     if ($response==1) {
         //UNCOMMENT AND TEST WHEN ON A SERVER!!!

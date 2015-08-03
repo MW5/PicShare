@@ -5,13 +5,15 @@ require "../Controller/config.php";
 class LangPl extends Config {
     public $title = "Obrazkownia";
     //body
-    public $websiteName = "Obrazki dla Ciebie!";
+    public $websiteName = "Wymyślić jakiś fajny tytuł";
     //nav
     public $navLeftBtns = array ("Wysoko ocenione"=>"highScore", "Wszystkie"=>"all"); 
     public $navRightBtns = array ("Zalogowany jako"=>"usrName", "Utwórz konto"=>"createAccBtn", "Dodaj"=>"addBtn",
         "Zaloguj"=>"logInBtn", "Wyloguj"=>"logOutBtn"); //action must always be the same!
     //content
     public $content = "";
+    //tags
+    public $tags = array ("test1", "test2", "test3");
     //modals
     public $modalCloseBtn = "Zamknij";
     //login modal

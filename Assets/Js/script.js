@@ -182,12 +182,14 @@ function requestFileUpl(target, baseData) {
 }
 
 function request(type, url, dataToSend) {
+    $("#spinner").show();
     $.ajax({
         type: type,
         url: url,
         data: dataToSend
       })
         .done(function( data ) {
+            $("#spinner").hide();
             //logIn
             if (url.search("logIn")>=0) {
                 if (data !== "noUser") {
@@ -223,7 +225,6 @@ function request(type, url, dataToSend) {
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
-                console.log(data);
             }
             //display
             if (url.search("displayPl")>=0) {
@@ -231,10 +232,9 @@ function request(type, url, dataToSend) {
             }
             //points
             if (url.search("points")>=0) {
-                if (data === "11") {
+                if (data === "111") {
                     $(".plus").fadeOut();
                     $(".minus").fadeOut();
-                    alert.createAlert(alert.uploadSuccess, alert.succ);
                     display(displayMode());
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
@@ -298,25 +298,20 @@ $(document).ready(function() {
     $("#addBtn").hide();
 
 //again bypassing some bootstrap problem
-    $(".topBtns").css("color", NOTACTIVECOLOR);
+//    $(".topBtns").css("color", NOTACTIVECOLOR);
     $("#all").css("color", ACTIVECOLOR);
     
 //modal submit on enter
-$("#logInModal").keyup(function(event){
-    if(event.keyCode == 13){
-        $("#modalLogInBtn").click();
-    }
-});
-$("#uploadModal").keyup(function(event){
-    if(event.keyCode == 13){
-        $("#modalUploadBtn").click();
-    }
-});
-$("#registerModal").keyup(function(event){
-    if(event.keyCode == 13){
-        $("#modalRegisterBtn").click();
-    }
-});
+function submitOnEnt (modal, modalBtn) {
+    modal.keyup(function(event){
+        if(event.keyCode == 13){
+            modalBtn.click();
+        }
+    });
+}
+submitOnEnt ($("#logInModal"), $("#modalLogInBtn"));
+submitOnEnt ($("#uploadModal"), $("#modalUploadBtn"));
+submitOnEnt ($("#registerModal"), $("#modalRegisterBtn"));
 
 //check session
 request("post","../Controller/checkSession.php");

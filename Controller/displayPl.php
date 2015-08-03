@@ -53,7 +53,6 @@ for ($i=0; $i<$numOfMatches; $i++) {
         } else {
             echo "<iframe width='678px' height='381px' class='vid displayed' src='https://www.youtube.com/embed/".$toDisplay['path']."' frameborder='0' allowfullscreen></iframe>";
         }
-        //grade buttons ONLY FOR LOGGED IN AND THOS THAT HAVEN GRADED IT YET!
         
         $plus = "";
         $minus = "";

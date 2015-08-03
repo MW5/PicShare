@@ -12,40 +12,54 @@ class Model {
     public $logIn = "logIn";
     public $logOut = "logOut";
     
-    //mail stuff
-    public $mailSubject = "";
-    public $mailContent = "";
-    public $mailFrom = "";
-    
     //body
-        //nav
-        public $websiteName;
-        public $navLeftBtns;
-        public $navRightBtns;
-        //jumbotron
-        public $content;
-        //modals
-            //universal
-            public $modalCloseBtn;
-            //login modal
-            public $logInModalHeading;
-            public $logInModalUsrDataLabel;
-            public $logInModalPassLabel;
-            public $logInModalLogInBtn;
-            
-            //upload modal
-            public $uploadModalHeading;
-            public $uploadModalTextLabel;
-            public $uploadModalFileLabel;
-            public $uploadModalLinkLabel;
-            public $uploadModalUploadBtn;
-            
-            //register modal
-            public $registerModalHeading;
-            public $registerModalEmailLabel;
-            public $registerModalNameLabel;
-            public $registerModalPassLabel;
-            public $registerModalBtn;
+    //mail stuff
+    public $mailSubject;
+    public $mailContent;
+    public $mailFrom;
+    
+    //loading spinner
+    public $spinnerAddress;
+    
+    //ad places
+    public $adL;
+    public $adLLink;
+    public $adR;
+    public $adRLink;
+    
+    //nav
+    public $websiteName;
+    public $navLeftBtns;
+    public $navRightBtns;
+    
+    //tags
+    public $tags;
+    
+    //jumbotron
+    public $content;
+    
+    //modals
+        //universal
+        public $modalCloseBtn;
+        //login modal
+        public $logInModalHeading;
+        public $logInModalUsrDataLabel;
+        public $logInModalPassLabel;
+        public $logInModalLogInBtn;
+
+        //upload modal
+        public $uploadModalHeading;
+        public $uploadModalTextLabel;
+        public $uploadModalFileLabel;
+        public $uploadModalLinkLabel;
+        public $uploadModalUploadBtn;
+
+        //register modal
+        public $registerModalHeading;
+        public $registerModalEmailLabel;
+        public $registerModalNameLabel;
+        public $registerModalPassLabel;
+        public $registerModalBtn;
         
     //set
     public function __set($name, $value) {
@@ -61,6 +75,8 @@ class Model {
         $this->prepareModalUpload();
         $this->prepareModalRegister();
         $this->prepareAlerts();
+        $this->prepareSpinner();
+        $this->prepareAdverts();
     }
     
     public function prepareHead() {
@@ -81,7 +97,7 @@ class Model {
                 <nav class='navbar navbar-inverse navbar-fixed-top'>
                 <div class='container-fluid'>
                   <div class='navbar-header'>
-                    <a class='navbar-brand' href='../Public/index.php'>$this->websiteName</a>
+                    <a class='navbar-brand' id='webName' href='../Public/index.php'>$this->websiteName</a>
                   </div>
                   <div>";  
     }
@@ -105,13 +121,21 @@ class Model {
             }
         }
         echo "</ul>";
+        echo "</ul><ul class='nav navbar-nav navbar-right topBtns'>";
+        echo "</ul>";
     }
     public function prepareBodyAfterBtns() {
         echo "</div>
                 </div>
-              </nav>".
+              </nav>";
+        //tags
+        echo "<ul id='tagsWrapper'>";
+        foreach($this->tags as $tag) {
+            echo "<li class='tags'><a id='$tag' class='singleTag'>$tag</a></li>";
+        }
+        echo "</ul>";
               //jumbotron
-              "<div class='container'>
+        echo "<div class='container'>
                 <div class='jumbotron'>
                   $this->content
                 </div>
@@ -219,5 +243,12 @@ class Model {
               </div>
               <div id='alertDanger' class='alert alert-danger'>
               </div>";
+    }
+    public function prepareSpinner() {
+        echo "<img id='spinner' src='$this->spinnerAddress'>";
+    }
+    public function prepareAdverts() {
+        echo "<a class='advert' href='$this->adLLink'><img id='adL' src='$this->adL'></a>
+                <a class='advert' href='$this->adRLink'><img id='adR' src='$this->adR'></a>";
     }
 }
