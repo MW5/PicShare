@@ -1,6 +1,8 @@
 <?php
 require "dbConnect.php";
+require "../View/main_lang.php";
 
+//$translation = new HAS TO USE LANG OBJECT
 $dbName = "picshare";
 $logData = htmlspecialchars($_POST['usrData']);
 $logPass = sha1(htmlspecialchars($_POST['pass']));

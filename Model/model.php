@@ -53,6 +53,10 @@ class Model {
         public $uploadModalFileLabel;
         public $uploadModalLinkLabel;
         public $uploadModalUploadBtn;
+        
+        //user modal
+        public $userModalHeading;
+        public $deleteUsrModalUserBtn;
 
         //register modal
         public $registerModalHeading;
@@ -73,6 +77,7 @@ class Model {
         $this->prepareBodyAfterBtns();
         $this->prepareModalLogIn();
         $this->prepareModalUpload();
+        $this->prepareModalUser();
         $this->prepareModalRegister();
         $this->prepareAlerts();
         $this->prepareSpinner();
@@ -116,6 +121,8 @@ class Model {
                 echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#uploadModal'>$name</a></li>";
             } elseif ($action == 'createAccBtn') {
                 echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#registerModal'>$name</a></li>";
+            } elseif ($action == 'usrName') {
+                echo "<li><a id='$action' class='topBtns' data-toggle='modal' data-target='#userModal'>$name</a></li>";
             } else {
                 echo "<li><a id='$action' class='topBtns'>$name</a></li>";
             }
@@ -163,7 +170,7 @@ class Model {
                         </form>
                     </div>
                     <div class='modal-footer'>
-                        <button type='submit' id='modalLogInBtn' class='btn btn-default' data-dismiss='modal' disabled='true'>$this->logInModalLogInBtn</button>
+                        <button type='submit' id='modalLogInBtn' class='btn btn-default'>$this->logInModalLogInBtn</button>
                       <button type='button' id='modalCloseLogIn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
@@ -195,7 +202,7 @@ class Model {
                         </form>
                     </div>
                     <div class='modal-footer'>
-                        <button type='submit' id='modalUploadBtn' class='btn btn-default' data-dismiss='modal' disabled='true'>$this->uploadModalUploadBtn</button>
+                        <button type='submit' id='modalUploadBtn' class='btn btn-default' disabled='true'>$this->uploadModalUploadBtn</button>
                       <button type='button' id='modalCloseUploadBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
@@ -227,8 +234,26 @@ class Model {
                         </form>
                     </div>
                     <div class='modal-footer'>
-                        <button type='submit' id='modalRegisterBtn' class='btn btn-default' data-dismiss='modal' disabled='true'>$this->registerModalBtn</button>
+                        <button type='submit' id='modalRegisterBtn' class='btn btn-default' disabled='true'>$this->registerModalBtn</button>
                       <button type='button' id='modalCloseRegisterBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
+                    </div>
+                  </div>
+                </div>
+              </div>";
+    }
+    public function prepareModalUser() {
+        echo"<div id='userModal' class='modal fade' role='dialog'>
+                <div class='modal-dialog'>
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                      <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                      <h4 class='modal-title'>$this->userModalHeading</h4>
+                    </div>
+                    <div class='modal-body' id='usrModalContainer'>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='submit' id='modalUserDeleteBtn' class='btn btn-default'>$this->deleteUsrModalUserBtn</button>
+                      <button type='button' id='modalCloseUserBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
                 </div>

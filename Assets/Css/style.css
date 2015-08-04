@@ -9,7 +9,6 @@ body {
 #tagsWrapper {
     display: inline-block;
     width: 100%;
-    //background-color: #333333;
     background: linear-gradient(#333333 , black);
     z-index: 3; 
 }
@@ -22,20 +21,17 @@ body {
 }
 .topBtns, .navbar-brand, .singleTag {
     cursor: pointer !important;
-    color: white !important;
+    color: #cccccc !important;
     text-decoration: none !important;
 }
 
 .topBtns:hover, .navbar-brand:hover, .singleTag:hover {
     color: red !important;
+    transition: all 0.3s ease-out;
 }
 
 #webName {
     font-size: 22px;
-}
-
-.navbar-brand {
-    cursor: default;
 }
 
 .jumbotron {
@@ -48,9 +44,13 @@ body {
     background-color: black !important;
 }
 
-.pic, .vid {
+.pic {
     width: 80%;
     height: auto;
+}
+
+.vid {
+    width: 80%;
 }
 
 .displayedWrapper {
@@ -68,6 +68,7 @@ body {
     top: 350px;
     left: 0;
     right: 0;
+    z-index: 9001;
 }
 
 #spinner {
@@ -79,6 +80,7 @@ body {
     top: 300px;
     left: 0;
     right: 0;
+    z-index: 9002;
 }
 
 #adL {
@@ -99,9 +101,11 @@ body {
 
 .advert {
     opacity: 0.3;
+    transition: all 0.3s ease-out;
 }
 .advert:hover {
     opacity: 1.0;
+    transition: all 0.3s ease-out;
 }
 
 #tagsWrapper {
@@ -121,4 +125,71 @@ body {
 
 .underText {
     font-size: 18px !important;
+    color: #cccccc;
+    cursor: default;
 }
+
+.plus, .minus {
+    text-decoration: none !important;
+    cursor: pointer;
+    color: #cccccc !important;
+    transition: all 0.3s ease-out;
+    font-size: 65px;
+}
+
+.plus {
+    float: left;
+    position: relative;
+    left: 18%;
+    bottom: 20px;
+    color: lime !important;
+    opacity: 0.5;
+    transition: all 0.3s ease-out;
+}
+
+.plus:hover {
+    opacity: 1.0;
+    transition: all 0.3s ease-out;
+}
+
+.minus {
+    float: right;
+    position: relative;
+    right: 18%;
+    bottom: 26px;
+    color:red !important;
+    opacity: 0.5;
+    transition: all 0.3s ease-out;
+}
+
+.minus:hover {
+    opacity: 1.0;
+    transition: all 0.3s ease-out;
+}
+
+.points {
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+.usrDataLi {
+    list-style: none;
+}
+
+.pic:hover {
+    -webkit-filter: saturate(150%);
+}
+
+.onePicMode {
+    width: 100% !important; 
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    height: auto;
+}
+
+.modal-open {
+    overflow-y: scroll !important;
+}
+
+
+

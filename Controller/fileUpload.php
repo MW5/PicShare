@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION['loggedUsrId'])) {
+if (isset($_SESSION['loggedUsr'])) {
     $target_dir = "../UploadedPics/";
     $target_file = $target_dir . basename($_FILES["file"]["name"]);
     $uploadOk = 1;
@@ -41,8 +41,8 @@ if (isset($_SESSION['loggedUsrId'])) {
             $picPage = fopen("../UploadedPicPages/$noExt.php", "w");
             $pageContent = '<!DOCTYPE html>
                             <?php
-                            require "../View/picPage_langPl.php"; 
-                            class PicPage extends PicLangPl {
+                            require "../View/picPage_lang.php"; 
+                            class PicPage extends PicLang {
                                 public $content = "'.$content.'";
                                 public $navLeftBtns = array();
                             }

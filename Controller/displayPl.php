@@ -1,11 +1,9 @@
 <?php
 require "dbConnect.php";
-
+require "../View/main_lang.php";
 session_start();
 
-$uploadedBy = " przez  ";
-$dateOfUpload = " Dodane ";
-$points = " Punkty ";
+$translation = new Lang;
 
 $dbName = "picshare";
 
@@ -22,7 +20,7 @@ $displayRequest = new dbConnect;
 
 //checks for user grades
 if (isset($_SESSION['loggedUsrId'])){
-    $usrId = htmlspecialchars($_SESSION['loggedUsrId']);
+    $usrId = $_SESSION['loggedUsrId'];
     $usrGradeQuery = "select path from grades where usrid='$usrId'";
     $checkUserGradesResponse = $displayRequest->connection($dbName, $usrGradeQuery);
     $numOfGrades = $checkUserGradesResponse->num_rows; 
@@ -51,15 +49,15 @@ for ($i=0; $i<$numOfMatches; $i++) {
             echo "<a href='..\\UploadedPicPages\\$picPage[0].php'><img width='80%' height='auto' class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."'></a>";
             }
         } else {
-            echo "<iframe width='678px' height='381px' class='vid displayed' src='https://www.youtube.com/embed/".$toDisplay['path']."' frameborder='0' allowfullscreen></iframe>";
+            echo "<iframe width='80%' height='415' class='vid displayed' src='https://www.youtube.com/embed/".$toDisplay['path']."' frameborder='0' allowfullscreen></iframe>";
         }
         
         $plus = "";
         $minus = "";
         
         if  (isset($_SESSION['loggedUsrId'])) {
-            $plus = "<a id='p".$toDisplay['path']."' class='plus'><img src='../Assets/Img/plusBtn.png'></a>";
-            $minus = "<a id='m".$toDisplay['path']."' class='minus'><img src='../Assets/Img/minusBtn.png'></a>";
+            $plus = "<a id='p".$toDisplay['path']."' class='plus'>+</a>";
+            $minus = "<a id='m".$toDisplay['path']."' class='minus'>-</a>";
             for ($j=0; $j<$numOfGrades; $j++) {
                 if ($displayed[$i] == $grades[$j]) {
                     $plus = "";
@@ -69,11 +67,12 @@ for ($i=0; $i<$numOfMatches; $i++) {
             }
 
         }
-        echo "<p class='underText'>".$dateOfUpload.$toDisplay['uploaddate'].
-                $uploadedBy.$toDisplay['uploadername']."</br>".
+        echo "<p class='underText'><span class='uplInfo'>".$translation->dateOfUpload.$toDisplay['uploaddate'].
                 $plus.
-                $points.$toDisplay['points']." ".
-                $minus."</p></div>";
+                $minus.
+                $translation->uploadedBy.$toDisplay['uploadername']."</span></br>".
+                "<span class='points'>".$translation->grade.$toDisplay['points']."</span>".
+                "</p></div>";
             
     }
 

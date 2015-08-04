@@ -2,7 +2,7 @@
 
 require "../Controller/config.php";
 
-class LangPl extends Config {
+class Lang extends Config {
     public $title = "Obrazkownia";
     //body
     public $websiteName = "Wymyślić jakiś fajny tytuł";
@@ -24,21 +24,33 @@ class LangPl extends Config {
     
     //upload modal
     public $uploadModalHeading = "Dodaj plik lub link do wideo";
-    public $uploadModalTextLabel = "Opis";
-    public $uploadModalFileLabel = "Wybierz plik (dopuszcalne formaty: jpg, jpeg, gif, png";
+    public $uploadModalTextLabel = "Opis (do 40 znaków)";
+    public $uploadModalFileLabel = "Wybierz plik (dopuszczalne formaty: jpg, jpeg, gif, png)";
     public $uploadModalLinkLabel = "Wklej link do filmiku z You Tube";
     public $uploadModalUploadBtn = "Dodaj";
+    
+    //user modal
+    public $userModalHeading = "Panel użytkownika";
+    public $deleteUsrModalUserBtn = "Kliknij trzykrotnie aby usunąć konto";
+    public $userName = "Użytkownik: ";
+    public $addedPics = "Dodanych obrazków: ";
+    public $addedVidLinks = "Dodanych wideo: ";
+    public $points = "Ilość punktów: ";
     
     //register modal
     public $registerModalHeading = "Zarejestruj konto";
     public $registerModalEmailLabel = "Adres E-mail";
-    public $registerModalNameLabel = "Nazwa konta";
-    public $registerModalPassLabel = "Hasło (minimum 6 znaków, conajmniej jedna litera i cyfra)";
+    public $registerModalNameLabel = "Nazwa konta (do 15 znaków)";
+    public $registerModalPassLabel = "Hasło (6-20 znaków, conajmniej jedna litera i cyfra)";
     public $registerModalBtn = "Zarejestruj";
     
     //mail
-    public $mailSubject = "Potwierdź rejestrację"; //gdzie?
+    public $mailConfirmReg = "Potwierdź rejestrację"; //gdzie?
     public $mailContent = "";
     public $mailFrom = "Nazwa portalu";
     
+    //display
+    public $uploadedBy = " przez  ";
+    public $dateOfUpload = " Dodane ";
+    public $grade = "Punkty: ";
 }

@@ -1,6 +1,6 @@
 <?php
 require "dbConnect.php";
-require "../View/main_langPl.php";
+require "../View/main_lang.php";
 
 $dbName = "picshare";
 $getKey = htmlspecialchars($_GET['activated']);

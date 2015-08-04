@@ -4,6 +4,9 @@ GOODCOLOR = "lime";
 ACTIVECOLOR = "red";
 NOTACTIVECOLOR = "#9d9d9d";
 
+//click count for acc deletion
+clickCount = 0;
+
 //upload validation
 validUpl = false;
 validLink = false;
@@ -34,9 +37,13 @@ function unlockRegBtn () {
 function displayMode () {
     shortAddr = (window.location.href);
     if (shortAddr.indexOf("Public") > 0) {
+        $(".jumbotron").removeClass('onePicMode');
+        $(".container").removeClass('onePicMode');
         return "all";
     } else {
-        return "one";
+        $(".jumbotron").addClass('onePicMode');
+        $(".container").addClass('onePicMode');
+        return "one"; 
     }
 }
 
@@ -69,16 +76,6 @@ function logged (status) {
 
 //validation object
 var validate = {
-    //realtime login validation function
-    rtLogInValidation: function(keyTarget, subj1, subj2, minLength1, minLength2, toBlock) {
-        $(keyTarget).keyup(function() {
-            if (subj1.val().length >= minLength1 && subj2.val().length >= minLength2){
-                $(toBlock).prop('disabled', false);
-            } else {
-                $(toBlock).prop('disabled', true);
-            }
-        });
-    },
     //checks upload file extension 
     checkExtension: function(toCheck) {
         var ext = toCheck.val().split('.').pop().toLowerCase();
@@ -91,8 +88,8 @@ var validate = {
         }
     },
     //validates the youtube link
-    uplLinkValidation: function(toCheck) {
-        if (toCheck.val().search("https://www.youtube.com/")===0 || toCheck.val().search("https://youtu.be/")===0) {
+    uplLinkValidation: function(toCheck, maxLength) {
+        if ((toCheck.val().search("https://www.youtube.com/")===0 || toCheck.val().search("https://youtu.be/")===0) && toCheck.val().length <= maxLength) {
             toCheck.css('background-color', GOODCOLOR);
             return true;
         } else {
@@ -101,9 +98,9 @@ var validate = {
         }
     },
     //validates register mail address
-    regMailValidation: function(toCheck) {
+    regMailValidation: function(toCheck, maxLength) {
         re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        if (re.test(toCheck.val())) {
+        if (re.test(toCheck.val()) && toCheck.val().length <= maxLength) {
             toCheck.css('background-color', GOODCOLOR);
             return true;
         } else {
@@ -112,9 +109,9 @@ var validate = {
         }
     },
     //validates fields where only alphanumerics are allowed
-    nameText: function(toCheck) {
-        re = /^[a-z0-9]+$/i;
-        if (re.test(toCheck.val())) {
+    nameText: function(toCheck, maxLength) {
+        re = /^[a-z0-9_ ]+$/i;
+        if (re.test(toCheck.val()) && toCheck.val().length <= maxLength) {
             toCheck.css('background-color', GOODCOLOR);
             return true;
         } else {
@@ -122,11 +119,11 @@ var validate = {
             return false;
         }
     },
-    pass: function(toCheck) {
+    pass: function(toCheck, maxLength) {
         re = /^[a-z0-9]+$/i; //only alphanumerics
         re2 = /\D/; //check for at least one letter
         re3 =  /\d/; //check for at least one number
-        if (toCheck.val().length >=6 && re.test(toCheck.val()) && re2.test(toCheck.val()) && re3.test(toCheck.val())) {
+        if (toCheck.val().length <=maxLength && toCheck.val().length >=6 && re.test(toCheck.val()) && re2.test(toCheck.val()) && re3.test(toCheck.val())) {
             toCheck.css('background-color', GOODCOLOR);
             return true;
         } else {
@@ -135,12 +132,12 @@ var validate = {
         }
     },
     //rt validation for similiar text related input
-    rtTextValidation: function(toValidate, internalValidation, valVar ,btnToUnlock) {
+    rtTextValidation: function(toValidate, internalValidation, maxLength, valVar ,btnToUnlock) {
         toValidate.keyup(function() {
             if (toValidate.val().length>0) {
                 window[valVar] = false;
                 btnToUnlock();
-                if (internalValidation(toValidate)) {
+                if (internalValidation(toValidate, maxLength)) {
                     window[valVar] = true;
                     btnToUnlock();
                 }
@@ -193,10 +190,12 @@ function request(type, url, dataToSend) {
             //logIn
             if (url.search("logIn")>=0) {
                 if (data !== "noUser") {
+                    $("#logInModal").modal('toggle');
                     $("#usrName").html(data).fadeIn();
                     logged(true);
                     alert.createAlert(alert.logInSuccess, alert.succ);
                     display(displayMode());
+                    request("post","../Controller/fillUsrData.php", toSend);
                 } else {
                     alert.createAlert(alert.logInFail, alert.warn);
                 }
@@ -206,6 +205,7 @@ function request(type, url, dataToSend) {
                 if (data !== "noUser") {
                     $("#usrName").html(data).fadeIn();
                     logged(true);
+                    request("post","../Controller/fillUsrData.php", toSend);
                 } else {
                     logged(false);
                 }
@@ -213,13 +213,14 @@ function request(type, url, dataToSend) {
             }
             //logOut
             if (url.search("logOut")>=0) {
-                display(displayMode());
                 logged(false);
+                display(displayMode());
                 alert.createAlert(alert.logOutSuccess, alert.succ);
             }
             //upload
             if (url.search("upload")>=0) {
                 if (data == 1) {
+                    $("#uploadModal").modal('toggle');
                     alert.createAlert(alert.uploadSuccess, alert.succ);
                     display(displayMode());
                 } else {
@@ -232,7 +233,7 @@ function request(type, url, dataToSend) {
             }
             //points
             if (url.search("points")>=0) {
-                if (data === "111") {
+                if (data === "11") {
                     $(".plus").fadeOut();
                     $(".minus").fadeOut();
                     display(displayMode());
@@ -244,6 +245,7 @@ function request(type, url, dataToSend) {
             if (url.search("createAcc")>=0){
                 if (data == 1) {
                     alert.createAlert(alert.registerSuccess, alert.succ);
+                    $("#registerModal").modal('toggle');
                 }  else if (data === "emailExists") {
                     alert.createAlert(alert.emailExists, alert.warn);
                 }  else if (data === "nameExists") {
@@ -253,7 +255,18 @@ function request(type, url, dataToSend) {
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.warn);
                 }
-                console.log(data);
+            }
+            if (url.search("fillUsrData")>=0) {
+                $("#usrModalContainer").html(data);
+            }
+            //delete acc
+            if (url.search("deleteAcc")>=0) {
+                if (data == "deleted") {
+                    $("#userModal").modal('toggle');
+                    request("post","../Controller/logOut.php");
+                } else {
+                    alert.createAlert(alert.sthWentWrong, alert.warn);
+                }
             }
         })
         .fail(function() {
@@ -268,7 +281,7 @@ var alert = {
     logOutSuccess: "Wylogowano poprawnie",
     uploadSuccess: "Dodano pomyślnie",
     sthWentWrong: "Wystąpił problem!",
-    fileExist: "Plik o takiej nazwie istnieje już w naszej bazie. Zmień nazwę!",
+    fileExist: "Plik o takiej nazwie istnieje już w naszej bazie.",
     tooBig: "Plik ma zbyt duży rozmiar!",
     pointSuccess: "Oddano głos",
     emailExists: "Na podany adres e-mail zarejestrowano już konto!",
@@ -296,15 +309,11 @@ $(document).ready(function() {
     $("#logOutBtn").hide();
     $("#createAccBtn").hide();
     $("#addBtn").hide();
-
-//again bypassing some bootstrap problem
-//    $(".topBtns").css("color", NOTACTIVECOLOR);
-    $("#all").css("color", ACTIVECOLOR);
     
 //modal submit on enter
 function submitOnEnt (modal, modalBtn) {
     modal.keyup(function(event){
-        if(event.keyCode == 13){
+        if(event.keyCode == 13 && !modalBtn.prop('disabled')){
             modalBtn.click();
         }
     });
@@ -332,8 +341,6 @@ $("#all").click(function() {
 });
 
 //log in
-    validate.rtLogInValidation($("#modalUsrData"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
-    validate.rtLogInValidation($("#modalPass"), $("#modalUsrData"), $("#modalPass"), 1, 6, $("#modalLogInBtn"));
     $("#modalLogInBtn").click(function(){
         toSend =  {usrData: $("#modalUsrData").val(), pass: $("#modalPass").val()};
         request("post","../Controller/logIn.php", toSend);
@@ -368,7 +375,7 @@ $("#all").click(function() {
             $("#modalUpload").prop("disabled", true);
             validLink = false;
             unlockUplBtn();
-            if (validate.uplLinkValidation($("#modalLink"))) {
+            if (validate.uplLinkValidation($("#modalLink"),70)) {
                 validLink = true;
                 unlockUplBtn();
             }
@@ -381,7 +388,7 @@ $("#all").click(function() {
         }
     });
     //text
-    validate.rtTextValidation($("#modalUploadText"), validate.nameText, "validText", unlockUplBtn);
+    validate.rtTextValidation($("#modalUploadText"), validate.nameText, 40, "validText", unlockUplBtn);
 
     //uploadBtn
     $("#modalUploadBtn").click(function() {
@@ -411,17 +418,26 @@ $("#all").click(function() {
     });
     
     //registration
-    validate.rtTextValidation($("#modalRegisterEmail"), validate.regMailValidation, "validEmail", unlockRegBtn);
+    validate.rtTextValidation($("#modalRegisterEmail"), validate.regMailValidation, 50, "validEmail", unlockRegBtn);
     
     //name
-    validate.rtTextValidation($("#modalRegisterName"), validate.nameText, "validName", unlockRegBtn);
+    validate.rtTextValidation($("#modalRegisterName"), validate.nameText, 15, "validName", unlockRegBtn);
     
     //password
-    validate.rtTextValidation($("#modalRegisterPass"), validate.pass, "validPass", unlockRegBtn);
+    validate.rtTextValidation($("#modalRegisterPass"), validate.pass, 20, "validPass", unlockRegBtn);
     
     //registerBtn
     $("#modalRegisterBtn").click(function() {
         toSend = {email: $("#modalRegisterEmail").val(), name: $("#modalRegisterName").val(), pass: $("#modalRegisterPass").val()};
         request("post","../Controller/createAcc.php", toSend);
     });
+    //deleteAccBtn
+    $("#modalUserDeleteBtn").click(function() {
+        clickCount++;
+        if (clickCount === 3) {
+            request("post","../Controller/deleteAcc.php", toSend);
+            clickCount = 0;
+        }
+    });
+    
 });

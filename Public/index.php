@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
-    require "../View/main_langPl.php";
+    require "../View/main_lang.php";
     
-    $mainPage = new LangPl;
+    $mainPage = new Lang;
     $mainPage->display();
 
 

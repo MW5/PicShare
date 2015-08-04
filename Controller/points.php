@@ -3,7 +3,7 @@ require "dbConnect.php";
 
 session_start();
 
-if (isset($_SESSION['loggedUsrId'])) {
+if (isset($_SESSION['loggedUsr'])) {
     $dbName = "picshare";
     $grade = htmlspecialchars($_POST['grade']);
     $target = substr(htmlspecialchars($_POST['target']), 1);
@@ -13,10 +13,10 @@ if (isset($_SESSION['loggedUsrId'])) {
 
     if ($grade == "plus") {
         $query = "update links set points=points+1 where path='$target'";
-        $authorGradeQuery = "update users, links set point=point+1 where users.usrid=links.uploaderid and path='$target'";
+        $authorGradeQuery = "update users, links set points=points+1 where users.usrid=links.uploaderid and path='$target'";
     } else {
         $query = "update links set points=points-1 where path='$target'";
-        $authorGradeQuery = "update users, links set point=point-1 where users.usrid=links.uploaderid and path='$target'";
+        $authorGradeQuery = "update users, links set points=points-1 where users.usrid=links.uploaderid and path='$target'";
     }
     $usrGradeQuery = "insert into grades value ($usrId, '$target')";
     
@@ -25,7 +25,6 @@ if (isset($_SESSION['loggedUsrId'])) {
     if ($usrGradeQueryResponse==1) {
         $response = $gradeRequest->connection($dbName, $query);
         $AuthorPointresponse = $gradeRequest->connection($dbName, $authorGradeQuery);
-        echo $AuthorPointresponse;
         echo $response;
     }
     

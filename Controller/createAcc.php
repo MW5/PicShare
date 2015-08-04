@@ -2,7 +2,7 @@
 session_start();
 
 require "dbConnect.php";
-require "../View/main_langPl.php";
+require "../View/main_lang.php";
 
 $dbName = "picshare";
 
@@ -16,7 +16,7 @@ $createAccRequest = new dbConnect;
 
 //email validation
 $emailRe = "/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i";
-if (preg_match($emailRe, $email)) {
+if (preg_match($emailRe, $email) && strlen($email)<=50) {
     $checkEmailExist = "select * from users where usrmail='$email'";
     $response = $createAccRequest->connection($dbName, $checkEmailExist);
     $exists = $response->num_rows;
@@ -28,7 +28,7 @@ if (preg_match($emailRe, $email)) {
 }
 
 //name validation
-if (strlen($name) > 0) {
+if (strlen($name) > 0 && strlen($name) < 15) {
     $checkNameExist = "select * from users where usrname='$name'";
     $response = $createAccRequest->connection($dbName, $checkNameExist);
     $exists = $response->num_rows;
@@ -43,7 +43,7 @@ if (strlen($name) > 0) {
 $passRe1 = "/^[a-z0-9]+$/i";
 $passRe2 = "/\D/";
 $passRe3 = "/\d/";
-if (strlen($pass)>=6 &&preg_match($passRe1, $pass) && preg_match($passRe2, $pass) && preg_match($passRe3, $pass)) {
+if (strlen($pass)>=6 && strlen($pass<=20) && preg_match($passRe1, $pass) && preg_match($passRe2, $pass) && preg_match($passRe3, $pass)) {
     $valid++;
 }
 
@@ -56,10 +56,11 @@ if ($valid == 3) {
     $response = $createAccRequest->connection($dbName, $registerQuery);
     if ($response==1) {
         //UNCOMMENT AND TEST WHEN ON A SERVER!!!
+//        $translation = new Lang;
 //        $to      = "$email";
-//        $subject = "$mailSubject";
+//        $subject = "$translation->mailConfirmReg";
 //        $message = "$activationLink";
-//        $headers = "From: '$mailFrom\r\n'" . phpversion();
+//        $headers = "From: '$translation->mailFrom\r\n'" . phpversion();
 //        mail($to, $subject, $message, $headers);
         echo $response;
     } else {
