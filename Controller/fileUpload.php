@@ -37,7 +37,7 @@ if (isset($_SESSION['loggedUsr'])) {
     // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            $picPage = fopen("../UploadedPicPages/$noExt.php", "w");
+            $pathNoExtension = fopen("../UploadedPicPages/$noExt.php", "w");
             $pageContent = '<!DOCTYPE html>
                             <?php
                             require "../View/picPage_lang.php"; 
@@ -46,8 +46,8 @@ if (isset($_SESSION['loggedUsr'])) {
                             }
                             $picPage = new PicPage;
                             $picPage->display();';
-            fwrite($picPage, $pageContent);
-            fclose($picPage);
+            fwrite($pathNoExtension, $pageContent);
+            fclose($pathNoExtension);
             echo "success";
         } else {
             echo "error";

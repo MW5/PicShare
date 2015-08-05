@@ -27,6 +27,7 @@ class Lang extends Config {
     public $uploadModalTextLabel = "Opis (do 40 znaków)";
     public $uploadModalFileLabel = "Wybierz plik (dopuszczalne formaty: jpg, jpeg, gif, png)";
     public $uploadModalLinkLabel = "Wklej link do filmiku z You Tube";
+    public $uploadModalTagLabel = "Wybierz najbradziej pasujący tag";
     public $uploadModalUploadBtn = "Dodaj";
     
     //user modal

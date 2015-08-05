@@ -8,6 +8,7 @@ if (isset($_SESSION['loggedUsrId'])) {
     $pathData = htmlspecialchars($_POST['upload']);
     $type = htmlspecialchars($_POST['type']);
     $text = htmlspecialchars($_POST['text']);
+    $tag = htmlspecialchars($_POST['tag']);
     $usrName = $_SESSION['loggedUsr'];
     $usrId = $_SESSION['loggedUsrId'];
 
@@ -23,7 +24,7 @@ if (isset($_SESSION['loggedUsrId'])) {
     }
 
     if (($type == "pic" || $type == "vid") && strlen($pathData)>0 && strlen($text) >0) {
-        $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$type', '$text', 0, null)";
+        $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$type', '$text', '$tag', 0, null)";
         $uploadRequest = new dbConnect;
         $response = $uploadRequest->connection($dbName, $query);
     }

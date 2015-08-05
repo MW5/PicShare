@@ -52,6 +52,7 @@ class Model {
         public $uploadModalTextLabel;
         public $uploadModalFileLabel;
         public $uploadModalLinkLabel;
+        public $uploadModalTagLabel;
         public $uploadModalUploadBtn;
         
         //user modal
@@ -198,6 +199,14 @@ class Model {
                           <div class='form-group'>
                             <label for='description'>$this->uploadModalTextLabel:</label>
                             <input type='text' class='form-control' id='modalUploadText'>
+                          </div>
+                          <div class='form-group'>
+                            <label for='description'>$this->uploadModalTagLabel:</label>
+                            <select class='form-control' id='modalUploadTag'>"; 
+                            foreach($this->tags as $tag) {
+                                echo "<option value='$tag'>$tag</option>";
+                            }
+                            echo "</select>
                           </div>
                         </form>
                     </div>

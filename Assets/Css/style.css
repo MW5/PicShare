@@ -204,5 +204,12 @@ body {
     color: red;
 }
 
+#modalUploadTag {
+    background-color: lime;
+}
+
+.alreadyVoted {
+    opacity: 0.5;
+}
 
 

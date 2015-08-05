@@ -179,7 +179,9 @@ function requestFileUpl(target, baseData) {
 }
 
 function request(type, url, dataToSend) {
-    $("#spinner").show();
+    if (url.search("points")<0) {
+        $("#spinner").show();
+    }
     $.ajax({
         type: type,
         url: url,
@@ -240,6 +242,7 @@ function request(type, url, dataToSend) {
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
+                console.log(data);
             }
             //registerAcc
             if (url.search("createAcc")>=0){
@@ -268,6 +271,7 @@ function request(type, url, dataToSend) {
                     alert.createAlert(alert.sthWentWrong, alert.warn);
                 }
             }
+            
         })
         .fail(function() {
             alert.createAlert(alert.sthWentWrong, alert.dang);
@@ -325,6 +329,12 @@ submitOnEnt ($("#registerModal"), $("#modalRegisterBtn"));
 //display pages on click
 $(".jumbotron").on("click", ".singlePage", function () {
     display($(this).attr('id'));
+});
+
+//display according to tags
+$("#tagsWrapper").on("click", ".singleTag", function () {
+    display($(this).attr('id'));
+    $(".singleTag").hide();
 });
 
 //check session
@@ -398,7 +408,7 @@ $("#all").click(function() {
     //uploadBtn
     $("#modalUploadBtn").click(function() {
         if ($("#modalUpload").val() !=="") {
-            toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val()};
+            toSend = {upload: $("#modalUpload").val(), type:"pic", text:$("#modalUploadText").val(), tag:$("#modalUploadTag").val()};
             requestFileUpl($("#modalUpload"), toSend);
         }
         if ($("#modalLink").val().length > 0) {
@@ -407,20 +417,35 @@ $("#all").click(function() {
             } else {
                 queryLink = $("#modalLink").val().substr($("#modalLink").val().indexOf('.be')+4);
             }
-            toSend = {upload: queryLink, type:"vid", text: $("#modalUploadText").val()};
+            toSend = {upload: queryLink, type:"vid", text: $("#modalUploadText").val(), tag:$("#modalUploadTag").val()};
             request("post","../Controller/upload.php", toSend);
         }  
     });
     
-    //add and remove points
-    $(".jumbotron").on("click", ".plus", function() {
-        toSend = {grade: "plus", target:$(this).attr('id')};
-        request("post","../Controller/points.php", toSend);
-    });
-    $(".jumbotron").on("click", ".minus", function() {
-        toSend = {grade: "minus", target:$(this).attr('id')};
-        request("post","../Controller/points.php", toSend);
-    });
+    //to handle grading
+    function plusMinus (targetClass) {
+        //add and remove points
+        $(".jumbotron").on("click", targetClass, function() {
+            toModify = $(this).attr('id').substr(1, ($(this).attr('id').indexOf("."))-1);
+            $(".pm"+toModify).fadeOut();
+            if (targetClass === ".plus") {
+                var valToIncrease = $("#pkt"+toModify).html();
+                var increasedVal = parseInt(valToIncrease)+1;
+                $("#pkt"+toModify).html(increasedVal);
+                toSend = {grade: "plus", target:$(this).attr('id')};
+                request("post","../Controller/points.php", toSend);
+            } else {
+                var valToDecrease = $("#pkt"+toModify).html();
+                var decreasedVal = parseInt(valToDecrease)-1;
+                $("#pkt"+toModify).html(decreasedVal);
+                toSend = {grade: "minus", target:$(this).attr('id')};
+                request("post","../Controller/points.php", toSend);
+            }
+        });
+    }
+    plusMinus(".plus");
+    plusMinus(".minus");
+    
     
     //registration
     validate.rtTextValidation($("#modalRegisterEmail"), validate.regMailValidation, 50, "validEmail", unlockRegBtn);
