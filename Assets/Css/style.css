@@ -46,7 +46,8 @@ body {
 }
 
 .pic {
-    width: 80%;
+    width: auto;
+    max-width: 80%;
     height: auto;
 }
 
@@ -225,6 +226,12 @@ body {
     list-style: none;
 }
 
-.singleTag {
+.singleTag, .onePicTag, .currentTag {
     padding-left: 10px;
+}
+
+.currentTag, .onePicTag {
+    color: red;
+    cursor: default !important;
+    text-decoration: none !important;
 }

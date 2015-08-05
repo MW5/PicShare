@@ -139,7 +139,7 @@ class Model {
         //tags
         echo "<ul id='tagsWrapper'>";
         foreach($this->tags as $tag) {
-            echo "<li class='tags'><a id='$tag' class='singleTag'>$tag</a></li>";
+            echo "<li class='tags'><a id='$tag' class='singleTag'>#$tag</a></li>";
         }
         echo "</ul>";
               //jumbotron

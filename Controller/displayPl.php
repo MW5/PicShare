@@ -50,15 +50,22 @@ $displayed = array();
 for ($i=0; $i<$numOfMatches; $i++) {
         $toDisplay = $response->fetch_assoc();
         array_push($displayed,$toDisplay['path']);
-        echo "<div class='displayedWrapper'><p class='description'>".$toDisplay['text']."</p>";
+        echo "<div class='displayedWrapper'><p class='description'>".$toDisplay['text'];
+                if ($toDisplay['tag']==$currentContent) {
+                    echo "<a id='tag".$toDisplay['tag']."' class='currentTag'>#".$toDisplay['tag']."</a></p>";
+                } else if ($currentContent === "one") {
+                    echo "<a id='tag".$toDisplay['tag']."' class='onePicTag'>#".$toDisplay['tag']."</a></p>";
+                } else {
+                    echo "<a id='tag".$toDisplay['tag']."' class='singleTag'>#".$toDisplay['tag']."</a></p>";
+                }
         if ($toDisplay['type']=="pic") {
             $pathNoExtension = explode(".", $toDisplay['path']);
             $pathNoExtension[0];
             //check what link url to set according to mode of displaying (one or all)
             if ($currentContent=="one") {
-                 echo "<a href='..\\Public\\index.php'><img class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."'></a>";
+                 echo "<a href='..\\Public\\index.php'><img class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."' alt='$pathNoExtension[0]'></a>";
             } else {
-            echo "<a href='..\\UploadedPicPages\\$pathNoExtension[0].php'><img width='80%' height='auto' class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."'></a>";
+            echo "<a href='..\\UploadedPicPages\\$pathNoExtension[0].php'><img width='80%' height='auto' class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."' alt='$pathNoExtension[0]'></a>";
             }
         } else {
             echo "<iframe width='80%' height='415' class='vid displayed' src='https://www.youtube.com/embed/".$toDisplay['path']."' frameborder='0' allowfullscreen></iframe>";
@@ -82,7 +89,7 @@ for ($i=0; $i<$numOfMatches; $i++) {
                 $plus.
                 $minus.
                 $translation->uploadedBy.$toDisplay['uploadername']."</span></br>".
-                "<span class='points'>".$translation->grade."<span id='pkt".$pathNoExtension[0]."'>".$toDisplay['points']."</span></span>".
+                "<span class='points'>".$translation->grade."<span id='pts".$pathNoExtension[0]."'>".$toDisplay['points']."</span></span>".
                 "</p></div>";
     }
     

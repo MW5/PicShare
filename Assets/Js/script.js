@@ -36,7 +36,7 @@ function unlockRegBtn () {
     }
 }
 
-//checks whether to display more or one
+//checks whether to display one or more
 function displayMode () {
     shortAddr = (window.location.href);
     if (shortAddr.indexOf("Public") > 0) {
@@ -234,7 +234,6 @@ function request(type, url, dataToSend) {
             //display
             if (url.search("displayPl")>=0) {
                 $(".jumbotron").html(data);
-                console.log(data);
             }
             //points
             if (url.search("points")>=0) {
@@ -337,10 +336,11 @@ $(".jumbotron").on("click", ".singlePage", function () {
 });
 
 //display according to tags
-$("#tagsWrapper").on("click", ".singleTag", function () {
+$(".jumbotron, #tagsWrapper").on("click", ".singleTag", function () {
+    preparedContent = $(this).html().substr(1);
     currentlyDisplayedPage = "1";
-    currentlyDisplayedContent = $(this).attr('id');
-    display($(this).attr('id'));
+    currentlyDisplayedContent = preparedContent;
+    display(preparedContent);
     $(".singleTag").css("color", NOTACTIVECOLOR);
     $("#topTen").css("color", NOTACTIVECOLOR);
     $("#all").css("color", NOTACTIVECOLOR);
@@ -441,15 +441,15 @@ $("#all").click(function() {
             toModify = $(this).attr('id').substr(1, ($(this).attr('id').indexOf("."))-1);
             $(".pm"+toModify).css("color", "#cccccc");
             if (targetClass === ".plus") {
-                var valToIncrease = $("#pkt"+toModify).html();
+                var valToIncrease = $("#pts"+toModify).html();
                 var increasedVal = parseInt(valToIncrease)+1;
-                $("#pkt"+toModify).html(increasedVal);
+                $("#pts"+toModify).html(increasedVal);
                 toSend = {grade: "plus", target:$(this).attr('id')};
                 request("post","../Controller/points.php", toSend);
             } else {
-                var valToDecrease = $("#pkt"+toModify).html();
+                var valToDecrease = $("#pts"+toModify).html();
                 var decreasedVal = parseInt(valToDecrease)-1;
-                $("#pkt"+toModify).html(decreasedVal);
+                $("#pts"+toModify).html(decreasedVal);
                 toSend = {grade: "minus", target:$(this).attr('id')};
                 request("post","../Controller/points.php", toSend);
             }
