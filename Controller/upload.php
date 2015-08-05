@@ -6,15 +6,15 @@ session_start();
 if (isset($_SESSION['loggedUsrId'])) {
     $dbName = "picshare";
     $pathData = htmlspecialchars($_POST['upload']);
-    $type = htmlspecialchars($_POST['type']);
+    $currentContent = htmlspecialchars($_POST['type']);
     $text = htmlspecialchars($_POST['text']);
     $tag = htmlspecialchars($_POST['tag']);
     $usrName = $_SESSION['loggedUsr'];
     $usrId = $_SESSION['loggedUsrId'];
 
-    if ($type == "pic") {
+    if ($currentContent == "pic") {
         $pathData = substr($pathData, strrpos($pathData, "\\")+1);
-    } elseif ($type == "vid") {
+    } elseif ($currentContent == "vid") {
         if (strpos($pathData, "https://www.youtube.com/") === 0 ) {
             $pathData = substr($pathData, strpos($pathData, "=")+1);
         }
@@ -23,8 +23,8 @@ if (isset($_SESSION['loggedUsrId'])) {
         } 
     }
 
-    if (($type == "pic" || $type == "vid") && strlen($pathData)>0 && strlen($text) >0) {
-        $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$type', '$text', '$tag', 0, null)";
+    if (($currentContent == "pic" || $currentContent == "vid") && strlen($pathData)>0 && strlen($text) >0) {
+        $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$currentContent', '$text', '$tag', 0, null)";
         $uploadRequest = new dbConnect;
         $response = $uploadRequest->connection($dbName, $query);
     }

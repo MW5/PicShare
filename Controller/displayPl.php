@@ -7,24 +7,27 @@ $translation = new Lang;
 
 $dbName = "picshare";
 
-$type = htmlspecialchars($_POST['dispType']);
+$currentContent = htmlspecialchars($_POST['currentContent']);
+$currentPage = htmlspecialchars($_POST['currentPage']);
 
 $displayRequest = new dbConnect;
 
-if ($type=="topTen") {
-    $query = "select uploadername, path, type, text, tag, points, uploaddate from links where points>10 order by points desc limit 10";
-} else if ($type=="one") {
+if ($currentContent=="one") {
     $picName = htmlspecialchars($_POST['name']);
     $query = "select uploadername, path, type, text, tag, points, uploaddate from links where (path regexp '^$picName".".[a-z]')";
-} else if (is_numeric($type)) {
-    $typeQuery = $type*10-10;
-    $query = "select uploadername, path, type, text, tag, points, uploaddate from links order by uploaddate desc limit 10 offset $typeQuery";
-    //separate select to check for number of uploaded stuff in order to create pages btns
-    $getNum = "select linkid from links";
+} else if ($currentContent=="topTen") {
+    $query = "select uploadername, path, type, text, tag, points, uploaddate from links order by points desc limit 10";
+} else {
+    $typeQuery = $currentPage*10-10;
+    if ($currentContent=="all") {
+        $query = "select uploadername, path, type, text, tag, points, uploaddate from links order by uploaddate desc limit 10 offset $typeQuery";
+        $getNum = "select linkid from links";  
+    } else {
+        $query = "select uploadername, path, type, text, tag, points, uploaddate from links where tag='$currentContent' order by uploaddate desc limit 10 offset $typeQuery";
+        $getNum = "select linkid from links where tag='$currentContent'";
+    }
     $getNumResp= $displayRequest->connection($dbName, $getNum);
     $numOfLinks = $getNumResp->num_rows;
-} else {
-    $query = "select uploadername, path, type, text, tag, points, uploaddate from links where tag='$type'";
 }
 
 //checks for user grades
@@ -52,7 +55,7 @@ for ($i=0; $i<$numOfMatches; $i++) {
             $pathNoExtension = explode(".", $toDisplay['path']);
             $pathNoExtension[0];
             //check what link url to set according to mode of displaying (one or all)
-            if ($type=="one") {
+            if ($currentContent=="one") {
                  echo "<a href='..\\Public\\index.php'><img class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."'></a>";
             } else {
             echo "<a href='..\\UploadedPicPages\\$pathNoExtension[0].php'><img width='80%' height='auto' class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."'></a>";
@@ -69,12 +72,11 @@ for ($i=0; $i<$numOfMatches; $i++) {
             $minus = "<a id='m".$toDisplay['path']."' class='minus pm".$pathNoExtension[0]."'>-</a>";
             for ($j=0; $j<$numOfGrades; $j++) {
                 if ($displayed[$i] == $grades[$j]) {
-                    $plus = "";
-                    $minus = "";
+                    $plus = "<a id='p".$toDisplay['path']."' class='plusInactive pm".$pathNoExtension[0]."'>+</a>";
+                    $minus = "<a id='m".$toDisplay['path']."' class='minusInactive pm".$pathNoExtension[0]."'>-</a>";
                     break;
                 }
             }
-
         }
         echo "<p class='underText'><span class='uplInfo'>".$translation->dateOfUpload.$toDisplay['uploaddate'].
                 $plus.
@@ -85,16 +87,19 @@ for ($i=0; $i<$numOfMatches; $i++) {
     }
     
     if (isset($numOfLinks)) {
-        echo "<ul class='pagesWrapper'>";
-        for ($i=1; $i<=$numOfLinks/10+1; $i++) {
-            if ($i==$type){
-                echo "<li class='pages'><a id='$i' class='currentPage singlePage'>$i</a></li>";
-            } else {
-                echo "<li class='pages'><a id='$i' class='singlePage'>$i</a></li>";
+        if ($numOfLinks>10) {
+            echo "<ul class='pagesWrapper'>";
+            for ($i=1; $i<=$numOfLinks/10+1; $i++) {
+                if ($i==$currentContent){
+                    echo "<li class='pages'><a id='$i' class='currentPage singlePage'>$i</a></li>";
+                } else {
+                    echo "<li class='pages'><a id='$i' class='singlePage'>$i</a></li>";
+                }
             }
+            echo "</ul>";
         }
-        echo "</ul>";
     }
+    
 
 
 

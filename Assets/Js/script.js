@@ -4,6 +4,9 @@ GOODCOLOR = "lime";
 ACTIVECOLOR = "red";
 NOTACTIVECOLOR = "#cccccc";
 
+currentlyDisplayedPage = "1";
+currentlyDisplayedContent = "all";
+
 //click count for acc deletion
 clickCount = 0;
 
@@ -39,21 +42,21 @@ function displayMode () {
     if (shortAddr.indexOf("Public") > 0) {
         $(".jumbotron").removeClass('onePicMode');
         $(".container").removeClass('onePicMode');
-        return "1";
     } else {
         $(".jumbotron").addClass('onePicMode');
         $(".container").addClass('onePicMode');
-        return "one"; 
+        currentlyDisplayedContent = "one";
     }
 }
 
 //display one or more
-function display(type) {
-    if (type == "one")  {
+function display() {
+    displayMode();
+    if (currentlyDisplayedContent === "one")  {
         picName = shortAddr.slice(shortAddr.indexOf("PicPages")+9, -4);
-        toSend = {dispType: type, name: picName};
+        toSend = {currentContent: currentlyDisplayedContent, name: picName, currentPage: currentlyDisplayedPage};
     } else {
-        toSend = {dispType: type};
+        toSend = {currentContent: currentlyDisplayedContent, currentPage: currentlyDisplayedPage};
     }
     request("post","../Controller/displayPl.php", toSend);
 }
@@ -179,9 +182,7 @@ function requestFileUpl(target, baseData) {
 }
 
 function request(type, url, dataToSend) {
-    if (url.search("points")<0) {
-        $("#spinner").show();
-    }
+    $("#spinner").show();
     $.ajax({
         type: type,
         url: url,
@@ -192,11 +193,11 @@ function request(type, url, dataToSend) {
             //logIn
             if (url.search("logIn")>=0) {
                 if (data !== "noUser") {
+                    display();
                     $("#logInModal").modal('toggle');
                     $("#usrName").html(data).fadeIn();
                     logged(true);
                     alert.createAlert(alert.logInSuccess, alert.succ);
-                    display(displayMode());
                     request("post","../Controller/fillUsrData.php", toSend);
                 } else {
                     alert.createAlert(alert.logInFail, alert.warn);
@@ -211,12 +212,11 @@ function request(type, url, dataToSend) {
                 } else {
                     logged(false);
                 }
-                display(displayMode());
             }
             //logOut
             if (url.search("logOut")>=0) {
+                display();
                 logged(false);
-                display(displayMode());
                 alert.createAlert(alert.logOutSuccess, alert.succ);
             }
             //upload
@@ -224,7 +224,7 @@ function request(type, url, dataToSend) {
                 if (data == 1) {
                     $("#uploadModal").modal('toggle');
                     alert.createAlert(alert.uploadSuccess, alert.succ);
-                    display(displayMode());
+                    display();
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
@@ -232,17 +232,13 @@ function request(type, url, dataToSend) {
             //display
             if (url.search("displayPl")>=0) {
                 $(".jumbotron").html(data);
+                console.log(data);
             }
             //points
             if (url.search("points")>=0) {
-                if (data === "11") {
-                    $(".plus").fadeOut();
-                    $(".minus").fadeOut();
-                    display(displayMode());
-                } else {
+                if (!data === "11") {
                     alert.createAlert(alert.sthWentWrong, alert.dang);
                 }
-                console.log(data);
             }
             //registerAcc
             if (url.search("createAcc")>=0){
@@ -328,21 +324,30 @@ submitOnEnt ($("#registerModal"), $("#modalRegisterBtn"));
 
 //display pages on click
 $(".jumbotron").on("click", ".singlePage", function () {
+    currentlyDisplayedPage = $(this).attr('id');
     display($(this).attr('id'));
 });
 
 //display according to tags
 $("#tagsWrapper").on("click", ".singleTag", function () {
+    currentlyDisplayedPage = "1";
+    currentlyDisplayedContent = $(this).attr('id');
     display($(this).attr('id'));
-    $(".singleTag").hide();
+    $(".singleTag").css("color", NOTACTIVECOLOR);
+    $("#topTen").css("color", NOTACTIVECOLOR);
+    $("#all").css("color", NOTACTIVECOLOR);
+    $(this).css("color", ACTIVECOLOR);
 });
 
 //check session
 request("post","../Controller/checkSession.php");
-display(displayMode());
+display();
 
 //display good
 $("#topTen").click(function() {
+    currentlyDisplayedPage = "1";
+    currentlyDisplayedContent = $(this).attr('id');
+    $(".singleTag").css("color", NOTACTIVECOLOR);
     $("#all").css("color", NOTACTIVECOLOR);
     $("#topTen").css("color", ACTIVECOLOR);
     display("topTen");
@@ -350,9 +355,12 @@ $("#topTen").click(function() {
 
 //display all after click
 $("#all").click(function() {
+    currentlyDisplayedPage = "1";
+    currentlyDisplayedContent = $(this).attr('id');
+    $(".singleTag").css("color", NOTACTIVECOLOR);
     $("#all").css("color", ACTIVECOLOR);
     $("#topTen").css("color", NOTACTIVECOLOR);
-    display("1");
+    display();
 });
 
 //log in
@@ -427,7 +435,7 @@ $("#all").click(function() {
         //add and remove points
         $(".jumbotron").on("click", targetClass, function() {
             toModify = $(this).attr('id').substr(1, ($(this).attr('id').indexOf("."))-1);
-            $(".pm"+toModify).fadeOut();
+            $(".pm"+toModify).css("color", "#cccccc");
             if (targetClass === ".plus") {
                 var valToIncrease = $("#pkt"+toModify).html();
                 var increasedVal = parseInt(valToIncrease)+1;

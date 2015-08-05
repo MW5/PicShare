@@ -13,7 +13,7 @@ class Lang extends Config {
     //content
     public $content = "";
     //tags
-    public $tags = array ("test1", "test2", "test3");
+    public $tags = array ("europa", "ameryka", "azja", "muscle", "klasyk", "tuning", "drifting", "przyspieszenie", "dźwięk", "f1");
     //modals
     public $modalCloseBtn = "Zamknij";
     //login modal

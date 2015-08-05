@@ -130,19 +130,30 @@ body {
 .plus, .minus {
     text-decoration: none !important;
     cursor: pointer;
-    color: #cccccc !important;
-    transition: all 0.3s ease-out;
     font-size: 65px;
+    opacity: 0.5;
+    transition: all 0.3s ease-out;
+}
+
+.plusInactive, .minusInactive {
+    text-decoration: none !important;
+    cursor: default;
+    font-size: 65px;
+    color: #cccccc !important;
+    opacity: 0.5;
 }
 
 .plus {
+    color: lime;
+}
+
+.plus, .plusInactive {
     float: left;
+    clear: right;
     position: relative;
     left: 18%;
     bottom: 20px;
-    color: lime !important;
-    opacity: 0.5;
-    transition: all 0.3s ease-out;
+    
 }
 
 .plus:hover {
@@ -151,13 +162,14 @@ body {
 }
 
 .minus {
+    color:red;  
+}
+
+.minus, .minusInactive {
     float: right;
     position: relative;
     right: 18%;
     bottom: 26px;
-    color:red !important;
-    opacity: 0.5;
-    transition: all 0.3s ease-out;
 }
 
 .minus:hover {
@@ -170,7 +182,7 @@ body {
     margin-right: 7px;
 }
 
-.usrDataLi, .pages, .tags {
+.pages, .tags {
     display: inline;
     list-style: none;
 }
@@ -188,6 +200,7 @@ body {
 
 .modal-open {
     overflow-y: scroll !important;
+    padding-right: 0px !important;
 }
 
 .pagesWrapper {
@@ -208,8 +221,10 @@ body {
     background-color: lime;
 }
 
-.alreadyVoted {
-    opacity: 0.5;
+.usrDataLi {
+    list-style: none;
 }
 
-
+.singleTag {
+    padding-left: 10px;
+}
