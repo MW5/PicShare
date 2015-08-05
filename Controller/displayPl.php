@@ -90,7 +90,7 @@ for ($i=0; $i<$numOfMatches; $i++) {
         if ($numOfLinks>10) {
             echo "<ul class='pagesWrapper'>";
             for ($i=1; $i<=$numOfLinks/10+1; $i++) {
-                if ($i==$currentContent){
+                if ($i==$currentPage){
                     echo "<li class='pages'><a id='$i' class='currentPage singlePage'>$i</a></li>";
                 } else {
                     echo "<li class='pages'><a id='$i' class='singlePage'>$i</a></li>";

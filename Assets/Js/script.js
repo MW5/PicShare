@@ -182,7 +182,9 @@ function requestFileUpl(target, baseData) {
 }
 
 function request(type, url, dataToSend) {
-    $("#spinner").show();
+    if (url.search("points")<0) {
+        $("#spinner").show();
+    }
     $.ajax({
         type: type,
         url: url,
@@ -322,9 +324,15 @@ submitOnEnt ($("#logInModal"), $("#modalLogInBtn"));
 submitOnEnt ($("#uploadModal"), $("#modalUploadBtn"));
 submitOnEnt ($("#registerModal"), $("#modalRegisterBtn"));
 
+//check session
+request("post","../Controller/checkSession.php");
+display();
+
 //display pages on click
 $(".jumbotron").on("click", ".singlePage", function () {
     currentlyDisplayedPage = $(this).attr('id');
+    $(".singlePage").css("color", NOTACTIVECOLOR);
+    $(this).css("color", ACTIVECOLOR);
     display($(this).attr('id'));
 });
 
@@ -338,10 +346,6 @@ $("#tagsWrapper").on("click", ".singleTag", function () {
     $("#all").css("color", NOTACTIVECOLOR);
     $(this).css("color", ACTIVECOLOR);
 });
-
-//check session
-request("post","../Controller/checkSession.php");
-display();
 
 //display good
 $("#topTen").click(function() {
