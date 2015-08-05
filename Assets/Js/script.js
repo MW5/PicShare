@@ -2,7 +2,7 @@
 WRONGCOLOR = "orangered";
 GOODCOLOR = "lime";
 ACTIVECOLOR = "red";
-NOTACTIVECOLOR = "#9d9d9d";
+NOTACTIVECOLOR = "#cccccc";
 
 //click count for acc deletion
 clickCount = 0;
@@ -33,13 +33,13 @@ function unlockRegBtn () {
     }
 }
 
-//checks whether to display all or one
+//checks whether to display more or one
 function displayMode () {
     shortAddr = (window.location.href);
     if (shortAddr.indexOf("Public") > 0) {
         $(".jumbotron").removeClass('onePicMode');
         $(".container").removeClass('onePicMode');
-        return "all";
+        return "1";
     } else {
         $(".jumbotron").addClass('onePicMode');
         $(".container").addClass('onePicMode');
@@ -47,13 +47,13 @@ function displayMode () {
     }
 }
 
-//display all
-function display(type, mode) {
-    if (mode == "all") {
-        toSend = {dispType: type};
-    } else {
+//display one or more
+function display(type) {
+    if (type == "one")  {
         picName = shortAddr.slice(shortAddr.indexOf("PicPages")+9, -4);
         toSend = {dispType: type, name: picName};
+    } else {
+        toSend = {dispType: type};
     }
     request("post","../Controller/displayPl.php", toSend);
 }
@@ -322,22 +322,27 @@ submitOnEnt ($("#logInModal"), $("#modalLogInBtn"));
 submitOnEnt ($("#uploadModal"), $("#modalUploadBtn"));
 submitOnEnt ($("#registerModal"), $("#modalRegisterBtn"));
 
+//display pages on click
+$(".jumbotron").on("click", ".singlePage", function () {
+    display($(this).attr('id'));
+});
+
 //check session
 request("post","../Controller/checkSession.php");
 display(displayMode());
 
 //display good
-$("#highScore").click(function() {
+$("#topTen").click(function() {
     $("#all").css("color", NOTACTIVECOLOR);
-    $("#highScore").css("color", ACTIVECOLOR);
-    display("highScore");
+    $("#topTen").css("color", ACTIVECOLOR);
+    display("topTen");
 });
 
 //display all after click
 $("#all").click(function() {
     $("#all").css("color", ACTIVECOLOR);
-    $("#highScore").css("color", NOTACTIVECOLOR);
-    display("all");
+    $("#topTen").css("color", NOTACTIVECOLOR);
+    display("1");
 });
 
 //log in

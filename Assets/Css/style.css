@@ -19,13 +19,14 @@ body {
 .topBtns {
     font-size: 19px;
 }
-.topBtns, .navbar-brand, .singleTag {
+.topBtns, .navbar-brand, .singleTag, .singlePage {
     cursor: pointer !important;
-    color: #cccccc !important;
+    color: #cccccc;
     text-decoration: none !important;
+    transition: all 0.3s ease-out;
 }
 
-.topBtns:hover, .navbar-brand:hover, .singleTag:hover {
+.topBtns:hover, .navbar-brand:hover, .singleTag:hover, .singlePage:hover {
     color: red !important;
     transition: all 0.3s ease-out;
 }
@@ -115,9 +116,6 @@ body {
     clear: both;
     height: 20px;
 }
-.tags {
-    display: inline;
-}
 
 .description {
     margin-bottom: 5px !important;
@@ -172,7 +170,8 @@ body {
     margin-right: 7px;
 }
 
-.usrDataLi {
+.usrDataLi, .pages, .tags {
+    display: inline;
     list-style: none;
 }
 
@@ -189,6 +188,20 @@ body {
 
 .modal-open {
     overflow-y: scroll !important;
+}
+
+.pagesWrapper {
+    padding: 0px ;
+}
+
+.singlePage {
+    font-size: 19px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.currentPage {
+    color: red;
 }
 
 

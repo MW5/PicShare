@@ -7,16 +7,23 @@ $translation = new Lang;
 
 $dbName = "picshare";
 
-if (htmlspecialchars($_POST['dispType'])=="all") {
-    $query = "select * from links order by linkid desc";
-} else if (htmlspecialchars($_POST['dispType'])=="highScore") {
-    $query = "select * from links where points>10";
-} else {
-    $picName = htmlspecialchars($_POST['name']);
-    $query = "select * from links where (path regexp '^$picName".".[a-z]')";
-}
+$type = htmlspecialchars($_POST['dispType']);
 
 $displayRequest = new dbConnect;
+
+if ($type=="topTen") {
+    $query = "select * from links where points>10 order by points desc limit 10";
+} else if ($type=="one") {
+    $picName = htmlspecialchars($_POST['name']);
+    $query = "select * from links where (path regexp '^$picName".".[a-z]')";
+} else {
+    $typeQuery = $type*10-10;
+    $query = "select * from links order by uploaddate desc limit 10 offset $typeQuery";
+    //separate select to check for number of uploaded stuff in order to create pages btns
+    $getNum = "select linkid from links";
+    $getNumResp= $displayRequest->connection($dbName, $getNum);
+    $numOfLinks = $getNumResp->num_rows;
+}
 
 //checks for user grades
 if (isset($_SESSION['loggedUsrId'])){
@@ -43,7 +50,7 @@ for ($i=0; $i<$numOfMatches; $i++) {
             $picPage = explode(".", $toDisplay['path']);
             $picPage[0];
             //check what link url to set according to mode of displaying (one or all)
-            if (htmlspecialchars($_POST['dispType'])=="one") {
+            if ($type=="one") {
                  echo "<a href='..\\Public\\index.php'><img class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."'></a>";
             } else {
             echo "<a href='..\\UploadedPicPages\\$picPage[0].php'><img width='80%' height='auto' class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."'></a>";
@@ -73,7 +80,19 @@ for ($i=0; $i<$numOfMatches; $i++) {
                 $translation->uploadedBy.$toDisplay['uploadername']."</span></br>".
                 "<span class='points'>".$translation->grade.$toDisplay['points']."</span>".
                 "</p></div>";
-            
+    }
+    
+    if (isset($numOfLinks)) {
+        echo "<ul class='pagesWrapper'>";
+        for ($i=1; $i<=$numOfLinks/10+1; $i++) {
+
+            if ($i==$type){
+                echo "<li class='pages'><a id='$i' class='currentPage singlePage'>$i</a></li>";
+            } else {
+                echo "<li class='pages'><a id='$i' class='singlePage'>$i</a></li>";
+            }
+        }
+        echo "</ul>";
     }
 
 

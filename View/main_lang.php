@@ -7,7 +7,7 @@ class Lang extends Config {
     //body
     public $websiteName = "Wymyślić jakiś fajny tytuł";
     //nav
-    public $navLeftBtns = array ("Wysoko ocenione"=>"highScore", "Wszystkie"=>"all"); 
+    public $navLeftBtns = array ("Najlepsze 10"=>"topTen", "Wszystkie"=>"all"); 
     public $navRightBtns = array ("Zalogowany jako"=>"usrName", "Utwórz konto"=>"createAccBtn", "Dodaj"=>"addBtn",
         "Zaloguj"=>"logInBtn", "Wyloguj"=>"logOutBtn"); //action must always be the same!
     //content
