@@ -65,6 +65,6 @@ class Lang extends Config {
     public $regConfirmationFail = "Wystąpił problem";
     
     //pass recovery
-    public $passRecoverySucc = "Twoje tymczasowe hasło to: ";
+    public $passRecoverySucc = "Skopiuj swoje tymczasowe hasło i zmień je po zalogowaniu w panelu użytkownika: ";
     public $passRecoveryFail = "Wystąpił problem";
 }

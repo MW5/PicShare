@@ -52,15 +52,16 @@ for ($i=0; $i<$numOfMatches; $i++) {
         array_push($displayed,$toDisplay['path']);
         echo "<div class='displayedWrapper'><p class='description'>".$toDisplay['text'];
                 if ($toDisplay['tag']==$currentContent) {
-                    echo "<a id='tag".$toDisplay['tag']."' class='currentTag'>#".$toDisplay['tag']."</a></p>";
+                    echo "<a id='tag".$toDisplay['tag']."' class='currentTag'>#".$toDisplay['tag']."</a>";
                 } else if ($currentContent === "one") {
-                    echo "<a id='tag".$toDisplay['tag']."' class='onePicTag'>#".$toDisplay['tag']."</a></p>";
+                    echo "<a id='tag".$toDisplay['tag']."' class='onePicTag'>#".$toDisplay['tag']."</a>";
                 } else {
-                    echo "<a id='tag".$toDisplay['tag']."' class='singleTag'>#".$toDisplay['tag']."</a></p>";
+                    echo "<a id='tag".$toDisplay['tag']."' class='singleTag'>#".$toDisplay['tag']."</a>";
                 }
+        $pathNoExtension = explode(".", $toDisplay['path']);
+        echo "<div class='fb-like' data-href='..\\UploadedPicPages\\$pathNoExtension[0].php' data-layout='button_count' data-action='like' data-show-faces='true' data-share='true'></div></p>";
         if ($toDisplay['type']=="pic") {
-            $pathNoExtension = explode(".", $toDisplay['path']);
-            $pathNoExtension[0];
+            
             //check what link url to set according to mode of displaying (one or all)
             if ($currentContent=="one") {
                  echo "<a href='..\\Public\\index.php'><img class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."' alt='$pathNoExtension[0]'></a>";

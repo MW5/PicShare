@@ -21,7 +21,7 @@ body {
 }
 .topBtns, .navbar-brand, .singleTag, .singlePage, .outsidePage {
     cursor: pointer !important;
-    color: #cccccc;
+    color: #E4E3E3;
     text-decoration: none !important;
     transition: all 0.3s ease-out;
 }
@@ -124,7 +124,7 @@ body {
 
 .underText {
     font-size: 18px !important;
-    color: #cccccc;
+    color: #E4E3E3;
     cursor: default;
 }
 
@@ -140,7 +140,7 @@ body {
     text-decoration: none !important;
     cursor: default;
     font-size: 65px;
-    color: #cccccc !important;
+    color: #E4E3E3 !important;
     opacity: 0.5;
 }
 
@@ -153,7 +153,7 @@ body {
     clear: right;
     position: relative;
     left: 18%;
-    bottom: 20px;
+    bottom: 25px;
     
 }
 
@@ -170,7 +170,7 @@ body {
     float: right;
     position: relative;
     right: 18%;
-    bottom: 26px;
+    bottom: 25px;
 }
 
 .minus:hover {
@@ -218,10 +218,6 @@ body {
     color: red;
 }
 
-#modalUploadTag {
-    background-color: lime;
-}
-
 .usrDataLi {
     list-style: none;
 }
@@ -247,4 +243,36 @@ body {
 
 .usrModalPassChangeWrapper {
     display: none;
+}
+
+body {
+    font-family: Tahoma, Geneva, sans-serif !important;
+}
+
+.modal-content {
+    color: #cccccc;
+    text-shadow: 0px 2px 3px #555;
+    background-color: #333333 !important;
+}
+
+.form-control {
+    background-color: transparent;
+    color: #cccccc;
+}
+
+.close {
+    color: red !important;
+}
+
+#tempPass {
+    color: #E4E3E3;
+    text-decoration: none !important;
+    transition: all 0.3s ease-out;
+    display: block;
+    font-size: 70px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+    
 }

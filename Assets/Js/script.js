@@ -1,7 +1,7 @@
 //'constants' for ui coloring according to validation
 WRONGCOLOR = "orangered";
-GOODCOLOR = "lime";
-ACTIVECOLOR = "red";
+GOODCOLOR = "green";
+ACTIVECOLOR = "#D83E05";
 NOTACTIVECOLOR = "#cccccc";
 
 currentlyDisplayedPage = "1";
@@ -309,6 +309,7 @@ function request(type, url, dataToSend) {
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.warn);
                 }
+                console.log(data);
             }
             //change pass
             if (url.search("changePass")>=0) {

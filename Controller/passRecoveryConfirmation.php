@@ -7,7 +7,7 @@ $translation = new Lang;
 
 $dbName = "picshare";
 $getKey = htmlspecialchars($_GET['recovery']);
-$tempPass = substr($getKey, 0, 5);
+$tempPass = substr($getKey, 0, 6);
 $tempPassSha = sha1($tempPass);
 $query = "select recovery from users where recovery='$getKey'";
 $queryResetPass = "update users set usrpass='$tempPassSha' where recovery='$getKey'";
@@ -29,12 +29,12 @@ if ($numOfMatches == 1) {
     $responseResetPass = $resetPass->connection($dbName, $queryResetPass);
     $responseNoRecovery = $resetPass->connection($dbName, $queryNoRecovery);
     if ($responseResetPass == 1 && $responseNoRecovery == 1) {
-            echo $translation->passRecoverySucc."</br>".$tempPass;
+            echo $translation->passRecoverySucc."</a></br><span id='tempPass'>".$tempPass;
     } else {
-        echo $translation->passRecoveryFail;
+        echo $translation->passRecoveryFail."</a>";
     }
 } else {
     echo $translation->passRecoveryFail;
 }
 
-echo "</a></body>";
+echo "</span></div></body>";
