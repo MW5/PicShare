@@ -19,14 +19,14 @@ body {
 .topBtns {
     font-size: 19px;
 }
-.topBtns, .navbar-brand, .singleTag, .singlePage {
+.topBtns, .navbar-brand, .singleTag, .singlePage, .outsidePage {
     cursor: pointer !important;
     color: #cccccc;
     text-decoration: none !important;
     transition: all 0.3s ease-out;
 }
 
-.topBtns:hover, .navbar-brand:hover, .singleTag:hover, .singlePage:hover {
+.topBtns:hover, .navbar-brand:hover, .singleTag:hover, .singlePage:hover, .outsidePage:hover {
     color: red !important;
     transition: all 0.3s ease-out;
 }
@@ -234,4 +234,17 @@ body {
     color: red;
     cursor: default !important;
     text-decoration: none !important;
+}
+
+.outsidePage {
+    display: block;
+    font-size: 70px;
+    text-align: center;
+    margin-top: 350px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.usrModalPassChangeWrapper {
+    display: none;
 }

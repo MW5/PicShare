@@ -45,6 +45,7 @@ class Model {
         public $logInModalHeading;
         public $logInModalUsrDataLabel;
         public $logInModalPassLabel;
+        public $logInModalRemindPassBtn;
         public $logInModalLogInBtn;
 
         //upload modal
@@ -57,6 +58,9 @@ class Model {
         
         //user modal
         public $userModalHeading;
+        public $userModalPassChangeLabel;
+        public $userModalPassChangeConfirmLabel;
+        public $changePassModalUserBtn;
         public $deleteUsrModalUserBtn;
 
         //register modal
@@ -171,6 +175,7 @@ class Model {
                         </form>
                     </div>
                     <div class='modal-footer'>
+                        <button type='submit' id='modalRemindPassBtn' class='btn btn-default' disabled='true'>$this->logInModalRemindPassBtn</button>
                         <button type='submit' id='modalLogInBtn' class='btn btn-default'>$this->logInModalLogInBtn</button>
                       <button type='button' id='modalCloseLogIn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
@@ -260,8 +265,17 @@ class Model {
                     </div>
                     <div class='modal-body' id='usrModalContainer'>
                     </div>
+                    <div class='modal-body usrModalPassChangeWrapper'>
+                        <div class='form-group'>
+                            <label for='pwd' id='a'>$this->userModalPassChangeLabel:</label>
+                            <input type='password' class='form-control' id='modalUsrPassChange'>
+                            <label for='pwd'>$this->userModalPassChangeConfirmLabel:</label>
+                            <input type='password' class='form-control' id='modalUsrPassChangeConfirm'>
+                        </div>
+                    </div>
                     <div class='modal-footer'>
-                        <button type='submit' id='modalUserDeleteBtn' class='btn btn-default'>$this->deleteUsrModalUserBtn</button>
+                       <button type='submit' id='modalPassChangeBtn' class='btn btn-default'>$this->changePassModalUserBtn</button>
+                       <button type='submit' id='modalDeleteBtn' class='btn btn-default'>$this->deleteUsrModalUserBtn</button>
                       <button type='button' id='modalCloseUserBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>

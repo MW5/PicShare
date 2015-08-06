@@ -20,6 +20,7 @@ class Lang extends Config {
     public $logInModalHeading = "Zaloguj";
     public $logInModalUsrDataLabel = "Adres E-mail lub nazwa konta";
     public $logInModalPassLabel = "Hasło";
+    public $logInModalRemindPassBtn = "Wprowadź E-mail jeśli zapomniałeś hasła";
     public $logInModalLogInBtn = "Zaloguj";
     
     //upload modal
@@ -32,11 +33,14 @@ class Lang extends Config {
     
     //user modal
     public $userModalHeading = "Panel użytkownika";
-    public $deleteUsrModalUserBtn = "Kliknij trzykrotnie aby usunąć konto";
     public $userName = "Użytkownik: ";
     public $addedPics = "Dodanych obrazków: ";
     public $addedVidLinks = "Dodanych wideo: ";
     public $points = "Ilość punktów: ";
+    public $userModalPassChangeLabel = "Nowe hasło";
+    public $userModalPassChangeConfirmLabel = "Potwierdź hasło";
+    public $changePassModalUserBtn = "Zmień hasło";
+    public $deleteUsrModalUserBtn = "Kliknij trzykrotnie aby usunąć konto";
     
     //register modal
     public $registerModalHeading = "Zarejestruj konto";
@@ -49,9 +53,18 @@ class Lang extends Config {
     public $mailConfirmReg = "Potwierdź rejestrację"; //gdzie?
     public $mailContent = "";
     public $mailFrom = "Nazwa portalu";
+    public $mailPassRecovery = "Kliknij aby zresetować hasło";
     
     //display
     public $uploadedBy = " przez  ";
     public $dateOfUpload = " Dodane ";
     public $grade = "Punkty: ";
+    
+    //reg confirmation
+    public $regConfirmationSucc = "Konto aktywowane";
+    public $regConfirmationFail = "Wystąpił problem";
+    
+    //pass recovery
+    public $passRecoverySucc = "Twoje tymczasowe hasło to: ";
+    public $passRecoveryFail = "Wystąpił problem";
 }

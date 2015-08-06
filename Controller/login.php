@@ -1,14 +1,11 @@
 <?php
 require "dbConnect.php";
-require "../View/main_lang.php";
 
-//$translation = new HAS TO USE LANG OBJECT
 $dbName = "picshare";
 $logData = htmlspecialchars($_POST['usrData']);
 $logPass = sha1(htmlspecialchars($_POST['pass']));
 $query = "select * from users where (usrname='$logData' and usrpass='$logPass' and activated=1) or"
         . " (usrmail='$logData' and usrpass='$logPass' and activated=1)";
-
 $logInRequest = new dbConnect;
 $response = $logInRequest->connection($dbName, $query);
 $numOfMatches = $response->num_rows;
@@ -21,5 +18,3 @@ if ($numOfMatches==1) {
 } else {
     echo "noUser";
 }
-
-

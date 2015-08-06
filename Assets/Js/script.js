@@ -8,7 +8,9 @@ currentlyDisplayedPage = "1";
 currentlyDisplayedContent = "all";
 
 //click count for acc deletion
-clickCount = 0;
+clickCountDel = 0;
+//click count for edit
+clickCountEdit = 0;
 
 //upload validation
 validUpl = false;
@@ -20,6 +22,17 @@ function unlockUplBtn () {
         $("#modalUploadBtn").prop('disabled', false);
     } else {
         $("#modalUploadBtn").prop('disabled', true);
+    }
+}
+
+validPassChange = false;
+validPassChangeConfirm = false;
+//for rt pass change validation
+function unlockPassChangeBtn () {
+    if (validPassChange && validPassChangeConfirm) {
+        $("#modalPassChangeBtn").prop('disabled', false);
+    } else {
+        $("#modalPassChangeBtn").prop('disabled', true);
     }
 }
 
@@ -58,7 +71,7 @@ function display() {
     } else {
         toSend = {currentContent: currentlyDisplayedContent, currentPage: currentlyDisplayedPage};
     }
-    request("post","../Controller/displayPl.php", toSend);
+    request("post","../Controller/display.php", toSend);
 }
 
 //btns show/hide for logged/logged out user
@@ -111,6 +124,14 @@ var validate = {
             return false;
         }
     },
+    logInMailValidation: function(toCheck, maxLength) {
+        re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        if (re.test(toCheck.val()) && toCheck.val().length <= maxLength) {
+            return true;
+        } else {
+            return false;
+        }
+    },
     //validates fields where only alphanumerics are allowed
     nameText: function(toCheck, maxLength) {
         re = /^[a-z0-9_ ]+$/i;
@@ -134,13 +155,23 @@ var validate = {
             return false;
         }
     },
+    compare: function(toCompare, toCompareWith){
+        
+        if (toCompare.val() === toCompareWith.val()) {
+            toCompare.css('background-color', GOODCOLOR);
+            return true;
+        } else {
+            toCompare.css('background-color', WRONGCOLOR);
+            return false;
+        }
+    },
     //rt validation for similiar text related input
-    rtTextValidation: function(toValidate, internalValidation, maxLength, valVar ,btnToUnlock) {
+    rtTextValidation: function(toValidate, internalValidation, maxLengthOrToCompareWith, valVar ,btnToUnlock) {
         toValidate.keyup(function() {
             if (toValidate.val().length>0) {
                 window[valVar] = false;
                 btnToUnlock();
-                if (internalValidation(toValidate, maxLength)) {
+                if (internalValidation(toValidate, maxLengthOrToCompareWith)) {
                     window[valVar] = true;
                     btnToUnlock();
                 }
@@ -232,7 +263,7 @@ function request(type, url, dataToSend) {
                 }
             }
             //display
-            if (url.search("displayPl")>=0) {
+            if (url.search("display")>=0) {
                 $(".jumbotron").html(data);
             }
             //points
@@ -261,22 +292,48 @@ function request(type, url, dataToSend) {
             }
             //delete acc
             if (url.search("deleteAcc")>=0) {
-                if (data == "deleted") {
+                if (data === "deleted") {
                     $("#userModal").modal('toggle');
                     request("post","../Controller/logOut.php");
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.warn);
                 }
             }
-            
+            //pass recovery
+            if (url.search("passRecovery")>=0) {
+                if (data === "noEmail") {
+                    alert.createAlert(alert.noEmail, alert.warn);
+                } else if (data === "1") {
+                    alert.createAlert(alert.passRecovery, alert.succ);
+                    $("#logInModal").modal('toggle');
+                } else {
+                    alert.createAlert(alert.sthWentWrong, alert.warn);
+                }
+            }
+            //change pass
+            if (url.search("changePass")>=0) {
+                if (data === "1") {
+                    alert.createAlert(alert.passChanged, alert.succ);
+                    $("#userModal").modal('toggle');
+                } else {
+                    alert.createAlert(alert.sthWentWrong, alert.warn);
+                }
+            }  
         })
         .fail(function() {
             alert.createAlert(alert.sthWentWrong, alert.dang);
-        })
+        });
 };
+
+
 
 var alert = {
     //text
+    changePass: "Zmień hasło",
+    confirmChangePass: "Potwierdź zmianę hasła",
+    resetPass: "Resetuj hasło",
+    resetPassEmailInfo: "Wprowadź E-mail jeśli zapomniałeś hasła",
+    //alertText
     logInSuccess: "Zalogowano pomyślnie",
     logInFail: "Błędne dane logowania",
     logOutSuccess: "Wylogowano poprawnie",
@@ -289,6 +346,9 @@ var alert = {
     nameExists: "Użytkownik o podanej nazwie już istnieje",
     registerSuccess: "Zarejestrowano konto, aktywuj je linkiem otrzymanym na maila",
     userExists: "Użytkownik o podanym adresie e-mail oraz nazwie już istnieje",
+    noEmail: "Podany adres e-mail nie istnieje w naszej bazie danych",
+    passRecovery: "Na podany adres e-mail wysłano link do zmiany hasła",
+    passChanged: "Pomyślnie ustawiono nowe hasło",
     //types
     succ: "Success",
     info: "Info",
@@ -368,6 +428,19 @@ $("#all").click(function() {
 });
 
 //log in
+    $("#modalUsrData").keyup(function() {
+        if (validate.logInMailValidation($("#modalUsrData"),50)) {
+            $("#modalRemindPassBtn").html(alert.resetPass);
+            $("#modalRemindPassBtn").attr("disabled", false);
+        } else {
+            $("#modalRemindPassBtn").html(alert.resetPassEmailInfo);
+            $("#modalRemindPassBtn").attr("disabled", true);
+        }
+    })
+    $("#modalRemindPassBtn").click(function() {
+        toSend = {email: $("#modalUsrData").val()};
+        request("post", "../Controller/passRecovery.php", toSend);
+    });
     $("#modalLogInBtn").click(function(){
         toSend =  {usrData: $("#modalUsrData").val(), pass: $("#modalPass").val()};
         request("post","../Controller/logIn.php", toSend);
@@ -473,13 +546,46 @@ $("#all").click(function() {
         toSend = {email: $("#modalRegisterEmail").val(), name: $("#modalRegisterName").val(), pass: $("#modalRegisterPass").val()};
         request("post","../Controller/createAcc.php", toSend);
     });
+    
     //deleteAccBtn
-    $("#modalUserDeleteBtn").click(function() {
-        clickCount++;
-        if (clickCount === 3) {
+    $("#modalDeleteBtn").click(function() {
+        clickCountDel++;
+        if (clickCountDel === 3) {
             request("post","../Controller/deleteAcc.php", toSend);
-            clickCount = 0;
+            clickCountDel = 0;
         }
+    });
+    
+    //change pass btn
+    $("#modalPassChangeBtn").click(function() {
+        clickCountEdit++;
+        if (clickCountEdit === 1) {
+            $(".usrModalPassChangeWrapper").show();
+            $("#modalPassChangeBtn").html(alert.confirmChangePass);
+            $("#modalPassChangeBtn").attr('disabled', true);
+            validate.rtTextValidation($("#modalUsrPassChange"), validate.pass, 20, "validPassChange", unlockPassChangeBtn);
+            validate.rtTextValidation($("#modalUsrPassChangeConfirm"), validate.compare, $("#modalUsrPassChange"), "validPassChangeConfirm", unlockPassChangeBtn);
+        } else if (clickCountEdit === 2) { //add validation
+            toSend = {newPass: $("#modalUsrPassChange").val()};
+            clickCountEdit = 0;
+            $(".usrModalPassChangeWrapper").hide();
+            $("#modalUsrPassChange").val("");
+            $("#modalUsrPassChange").css('background-color', 'transparent');
+            $("#modalUsrPassChangeConfirm").val("");
+            $("#modalUsrPassChangeConfirm").css('background-color', 'transparent');
+            $("#modalPassChangeBtn").html(alert.changePass);
+            $("#modalPassChangeBtn").attr('disabled', false);
+            request("post","../Controller/changePass.php", toSend);
+        }
+    });
+    
+    //reset counters on user modal close
+    $("#modalCloseUserBtn").click(function() {
+        clickCountDel = 0;
+        clickCountEdit = 0;
+        $(".usrModalPassChange").hide();
+        $("#modalChangePassBtn").html(alert.changePass);
+        $("#modalChangePassBtn").attr('disabled', false);
     });
     
 });

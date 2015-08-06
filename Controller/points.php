@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedUsr'])) {
     $usrGradeQueryResponse = $gradeRequest->connection($dbName, $usrGradeQuery);
     if ($usrGradeQueryResponse==1) {
         $response = $gradeRequest->connection($dbName, $query);
-        $AuthorPointresponse = $gradeRequest->connection($dbName, $authorGradeQuery);
+        $authorPointresponse = $gradeRequest->connection($dbName, $authorGradeQuery);
         echo $response;
     }
     
