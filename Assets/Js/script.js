@@ -30,9 +30,9 @@ validPassChangeConfirm = false;
 //for rt pass change validation
 function unlockPassChangeBtn () {
     if (validPassChange && validPassChangeConfirm) {
-        $("#modalPassChangeBtn").prop('disabled', false);
+        $("#userModalPassChangeBtn").prop('disabled', false);
     } else {
-        $("#modalPassChangeBtn").prop('disabled', true);
+        $("#userModalPassChangeBtn").prop('disabled', true);
     }
 }
 
@@ -549,7 +549,7 @@ $("#all").click(function() {
     });
     
     //deleteAccBtn
-    $("#modalDeleteBtn").click(function() {
+    $("#userModalDeleteBtn").click(function() {
         clickCountDel++;
         if (clickCountDel === 3) {
             request("post","../Controller/deleteAcc.php", toSend);
@@ -558,12 +558,12 @@ $("#all").click(function() {
     });
     
     //change pass btn
-    $("#modalPassChangeBtn").click(function() {
+    $("#userModalPassChangeBtn").click(function() {
         clickCountEdit++;
         if (clickCountEdit === 1) {
             $(".usrModalPassChangeWrapper").show();
-            $("#modalPassChangeBtn").html(alert.confirmChangePass);
-            $("#modalPassChangeBtn").attr('disabled', true);
+            $("#userModalPassChangeBtn").html(alert.confirmChangePass);
+            $("#userModalPassChangeBtn").attr('disabled', true);
             validate.rtTextValidation($("#modalUsrPassChange"), validate.pass, 20, "validPassChange", unlockPassChangeBtn);
             validate.rtTextValidation($("#modalUsrPassChangeConfirm"), validate.compare, $("#modalUsrPassChange"), "validPassChangeConfirm", unlockPassChangeBtn);
         } else if (clickCountEdit === 2) { //add validation
@@ -574,8 +574,8 @@ $("#all").click(function() {
             $("#modalUsrPassChange").css('background-color', 'transparent');
             $("#modalUsrPassChangeConfirm").val("");
             $("#modalUsrPassChangeConfirm").css('background-color', 'transparent');
-            $("#modalPassChangeBtn").html(alert.changePass);
-            $("#modalPassChangeBtn").attr('disabled', false);
+            $("#userModalPassChangeBtn").html(alert.changePass);
+            $("#userModalPassChangeBtn").attr('disabled', false);
             request("post","../Controller/changePass.php", toSend);
         }
     });

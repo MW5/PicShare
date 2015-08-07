@@ -3,9 +3,9 @@
 require "../Controller/config.php";
 
 class Lang extends Config {
-    public $title = "Obrazkownia";
+    public $title = "0-100";
     //body
-    public $websiteName = "Wymyślić jakiś fajny tytuł";
+    public $websiteName = "ZERO DO SETKI";
     //nav
     public $navLeftBtns = array ("Najlepsze 10"=>"topTen", "Wszystkie"=>"all"); 
     public $navRightBtns = array ("Zalogowany jako"=>"usrName", "Utwórz konto"=>"createAccBtn", "Dodaj"=>"addBtn",
@@ -14,6 +14,8 @@ class Lang extends Config {
     public $content = "";
     //tags
     public $tags = array ("europa", "ameryka", "azja", "muscle", "klasyk", "tuning", "drifting", "przyspieszenie", "dźwięk", "f1");
+    //footer
+    public $footerBtns = array("Kontakt"=>"contact", "Regulamin"=>"terms", "Zasady"=>"rules", "Polityka prywatności"=>"privacy");
     //modals
     public $modalCloseBtn = "Zamknij";
     //login modal
@@ -48,6 +50,26 @@ class Lang extends Config {
     public $registerModalNameLabel = "Nazwa konta (do 15 znaków)";
     public $registerModalPassLabel = "Hasło (6-20 znaków, conajmniej jedna litera i cyfra)";
     public $registerModalBtn = "Zarejestruj";
+    
+    //contact modal
+    public $contactModalHeading = "Kontakt";
+    public $contactModalNameLabel = "Imię i nazwisko lub nazwa firmy";
+    public $contactModalEmailLabel = "Adres E-mail";
+    public $contactModalCaptchaLabel = "Kod";
+    public $contactModalMessageLabel = "Wiadomość";
+    public $contactModalBtn = "Wyślij";
+
+    //terms of usage
+    public $termsModalHeading = "Regulamin";
+    public $termsModalContent = ""; // tutaj dodac najlepiej z innego pliku?
+
+    //rules
+    public $rulesModalHeading = "Zasady";
+    public $rulesModalContent = ""; //jak wyzej?
+
+    //privacy politics
+    public $privacyModalHeading = "Polityka prywatności";
+    public $privacyModalContent = ""; // tez?
     
     //mail
     public $mailConfirmReg = "Potwierdź rejestrację"; //gdzie?

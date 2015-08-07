@@ -2,8 +2,8 @@
 
 class dbConnect {
     public $host = "localhost";
-    public $user = "mw5";
-    public $pass = "dupa";
+    public $user = "picshare";
+    public $pass = "ka6ca72";
 
     public function connection($db, $query) {
         $connection = new mysqli($this->host, $this->user, $this->pass, $db);

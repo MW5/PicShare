@@ -36,6 +36,9 @@ class Model {
     //jumbotron
     public $content;
     
+    //footer
+    public $footerBtns;
+    
     //modals
         //universal
         public $modalCloseBtn;
@@ -58,8 +61,8 @@ class Model {
         public $userModalHeading;
         public $userModalPassChangeLabel;
         public $userModalPassChangeConfirmLabel;
-        public $changePassModalUserBtn;
-        public $deleteUsrModalUserBtn;
+        public $userModalPassChangeBtn;
+        public $userModalDeleteBtn;
 
         //register modal
         public $registerModalHeading;
@@ -67,6 +70,26 @@ class Model {
         public $registerModalNameLabel;
         public $registerModalPassLabel;
         public $registerModalBtn;
+        
+        //contact modal
+        public $contactModalHeading;
+        public $contactModalNameLabel;
+        public $contactModalEmailLabel;
+        public $contactModalCaptchaLabel;
+        public $contactModalMessageLabel;
+        public $contactModalBtn;
+        
+        //terms of usage
+        public $termsModalHeading;
+        public $termsModalContent;
+        
+        //rules
+        public $rulesModalHeading;
+        public $rulesModalContent;
+        
+        //privacy politics
+        public $privacyModalHeading;
+        public $privacyModalContent;
         
     //set
     public function __set($name, $value) {
@@ -82,6 +105,10 @@ class Model {
         $this->prepareModalUpload();
         $this->prepareModalUser();
         $this->prepareModalRegister();
+        $this->prepareModalContact();
+        $this->prepareModalsOnlyText("terms", $this->termsModalHeading, $this->termsModalContent);
+        $this->prepareModalsOnlyText("rules", $this->rulesModalHeading, $this->rulesModalContent);
+        $this->prepareModalsOnlyText("privacy", $this->privacyModalHeading, $this->privacyModalContent);
         $this->prepareAlerts();
         $this->prepareSpinner();
         $this->prepareAdverts();
@@ -157,8 +184,20 @@ class Model {
                 <div class='jumbotron'>
                   $this->content
                 </div>
-              </div>
-              </body></html>";
+              </div>";
+        echo "<ul id='footerWrapper'>";
+        foreach($this->footerBtns as $name=>$action) {
+            if ($action == "contact") {
+                echo "<li class='tags'><a id='$action' class='singleTag' data-toggle='modal' data-target='#contactModal'>$name</a></li>";
+            } elseif ($action == 'terms') {
+                echo "<li class='tags'><a id='$action' class='singleTag' data-toggle='modal' data-target='#termsModal'>$name</a></li>";
+            } elseif ($action == 'rules') {
+                echo "<li class='tags'><a id='$action' class='singleTag' data-toggle='modal' data-target='#rulesModal'>$name</a></li>";
+            } elseif ($action == 'privacy') {
+                echo "<li class='tags'><a id='$action' class='singleTag' data-toggle='modal' data-target='#privacyModal'>$name</a></li>";
+            }
+        }
+        echo "</ul></body></html>";         
     }
     public function prepareModalLogIn() {
         echo"<div id='logInModal' class='modal fade' role='dialog'>
@@ -280,9 +319,63 @@ class Model {
                         </div>
                     </div>
                     <div class='modal-footer'>
-                       <button type='submit' id='modalPassChangeBtn' class='btn btn-default'>$this->changePassModalUserBtn</button>
-                       <button type='submit' id='modalDeleteBtn' class='btn btn-default'>$this->deleteUsrModalUserBtn</button>
+                       <button type='submit' id='modalPassChangeBtn' class='btn btn-default'>$this->userModalPassChangeBtn</button>
+                       <button type='submit' id='modalDeleteBtn' class='btn btn-default'>$this->userModalDeleteBtn</button>
                       <button type='button' id='modalCloseUserBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
+                    </div>
+                  </div>
+                </div>
+              </div>";
+    }
+    public function prepareModalContact() {
+        echo"<div id='contactModal' class='modal fade' role='dialog'>
+                <div class='modal-dialog'>
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                      <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                      <h4 class='modal-title'>$this->contactModalHeading</h4>
+                    </div>
+                    <div class='modal-body'>
+                        <form role='form'>
+                          <div class='form-group'>
+                            <label for='email'>$this->contactModalEmailLabel:</label>
+                            <input type='email' class='form-control' id='modalContactEmail'>
+                          </div>
+                          <div class='form-group'>
+                            <label for='text'>$this->contactModalNameLabel:</label>
+                            <input type='text' class='form-control' id='modalContactName'>
+                          </div>
+                          <div class='form-group'>
+                            <label for='pwd'>$this->contactModalCaptchaLabel:</label>
+                            PUT CAPTCHA HERE
+                          </div>
+                          <div class='form-group'>
+                            <label for='text'>$this->contactModalMessageLabel:</label>
+                            <textarea class='form-control' id='modalContactMsg'></textarea>
+                          </div>
+                        </form>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='submit' id='modalContactBtn' class='btn btn-default' disabled='true'>$this->contactModalBtn</button>
+                      <button type='button' id='modalCloseContactBtn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
+                    </div>
+                  </div>
+                </div>
+              </div>";
+    }
+    public function prepareModalsOnlyText($id, $heading, $content) {
+        echo"<div id='".$id."Modal' class='modal fade' role='dialog'>
+                <div class='modal-dialog'>
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                      <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                      <h4 class='modal-title'>$heading</h4>
+                    </div>
+                    <div class='modal-body'>
+                    $content
+                    </div>
+                    <div class='modal-footer'>
+                      <button type='button' id='modalClose".ucfirst($id)."Btn' class='btn btn-default' data-dismiss='modal'>$this->modalCloseBtn</button>
                     </div>
                   </div>
                 </div>

@@ -19,20 +19,27 @@ body {
 .topBtns {
     font-size: 19px;
 }
-.topBtns, .navbar-brand, .singleTag, .singlePage, .outsidePage {
+.topBtns, .singleTag, .singlePage, .outsidePage {
     cursor: pointer !important;
     color: #E4E3E3;
     text-decoration: none !important;
     transition: all 0.3s ease-out;
 }
 
-.topBtns:hover, .navbar-brand:hover, .singleTag:hover, .singlePage:hover, .outsidePage:hover {
+.topBtns:hover, .singleTag:hover, .singlePage:hover, .outsidePage:hover {
     color: red !important;
     transition: all 0.3s ease-out;
 }
 
 #webName {
-    font-size: 22px;
+    font-size: 24px;
+    font-weight: bold;
+    color: red;
+    text-shadow: 1px 1px 0px #cccccc;
+    font-style: italic;
+}
+#webName:hover {
+    text-shadow: 1px 1px 1px red;
 }
 
 .jumbotron {
@@ -272,7 +279,5 @@ body {
     font-size: 70px;
     text-align: center;
     margin-left: auto;
-    margin-right: auto;
-    
-    
+    margin-right: auto;  
 }
