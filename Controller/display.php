@@ -59,7 +59,7 @@ for ($i=0; $i<$numOfMatches; $i++) {
                     echo "<a id='tag".$toDisplay['tag']."' class='singleTag'>#".$toDisplay['tag']."</a>";
                 }
         $pathNoExtension = explode(".", $toDisplay['path']);
-        echo "<div class='fb-like' data-href='..\\UploadedPicPages\\$pathNoExtension[0].php' data-layout='button_count' data-action='like' data-show-faces='true' data-share='true'></div></p>";
+        echo "<div class='fb-like' data-href='..\\UploadedPicPages\\$pathNoExtension[0].php' data-layout='button_count' data-action='like' data-show-faces='true' data-share='true' width='60px'></div></p>";
         if ($toDisplay['type']=="pic") {
             
             //check what link url to set according to mode of displaying (one or all)

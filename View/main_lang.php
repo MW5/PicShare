@@ -41,8 +41,8 @@ class Lang extends Config {
     public $points = "Ilość punktów: ";
     public $userModalPassChangeLabel = "Nowe hasło";
     public $userModalPassChangeConfirmLabel = "Potwierdź hasło";
-    public $changePassModalUserBtn = "Zmień hasło";
-    public $deleteUsrModalUserBtn = "Kliknij trzykrotnie aby usunąć konto";
+    public $userModalPassChangeBtn = "Zmień hasło";
+    public $userModalDeleteBtn = "Kliknij trzykrotnie aby usunąć konto";
     
     //register modal
     public $registerModalHeading = "Zarejestruj konto";

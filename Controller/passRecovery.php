@@ -28,7 +28,7 @@ if (preg_match($emailRe, $email) && strlen($email)<=50) {
 if ($valid == 1) {
     //CHANGE ACTIVATION LINK ADDRESS IF NEEDED!!!
     $hash = md5( rand(0,1000) ); // this is going to be sent in email
-    echo $passRecoveryLink = htmlspecialchars($_SERVER['SERVER_NAME']."/projects/PicShare/Controller/passRecoveryConfirmation.php?recovery=$hash");
+    $passRecoveryLink = htmlspecialchars($_SERVER['SERVER_NAME']."/projects/PicShare/Controller/passRecoveryConfirmation.php?recovery=$hash");
     $passRecoveryQuery = "update users set recovery='$hash' where usrmail='$email'";
     $response = $passRecoveryRequest->connection($dbName, $passRecoveryQuery);
     if ($response==1) {
@@ -39,7 +39,7 @@ if ($valid == 1) {
 //        $message = "$passRecoveryLink";
 //        $headers = "From: '$translation->mailFrom\r\n'" . phpversion();
 //        mail($to, $subject, $message, $headers);
-//        echo $response;
+        echo $response;
     } else {
         echo "err";
     }

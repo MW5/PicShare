@@ -30,9 +30,9 @@ validPassChangeConfirm = false;
 //for rt pass change validation
 function unlockPassChangeBtn () {
     if (validPassChange && validPassChangeConfirm) {
-        $("#userModalPassChangeBtn").prop('disabled', false);
+        $("#modalPassChangeBtn").prop('disabled', false);
     } else {
-        $("#userModalPassChangeBtn").prop('disabled', true);
+        $("#modalPassChangeBtn").prop('disabled', true);
     }
 }
 
@@ -265,6 +265,7 @@ function request(type, url, dataToSend) {
             //display
             if (url.search("display")>=0) {
                 $(".jumbotron").html(data);
+                $("#footerWrapper").show();
             }
             //points
             if (url.search("points")>=0) {
@@ -319,7 +320,7 @@ function request(type, url, dataToSend) {
                 } else {
                     alert.createAlert(alert.sthWentWrong, alert.warn);
                 }
-            }  
+            }
         })
         .fail(function() {
             alert.createAlert(alert.sthWentWrong, alert.dang);
@@ -549,7 +550,7 @@ $("#all").click(function() {
     });
     
     //deleteAccBtn
-    $("#userModalDeleteBtn").click(function() {
+    $("#modalDeleteBtn").click(function() {
         clickCountDel++;
         if (clickCountDel === 3) {
             request("post","../Controller/deleteAcc.php", toSend);
@@ -558,12 +559,12 @@ $("#all").click(function() {
     });
     
     //change pass btn
-    $("#userModalPassChangeBtn").click(function() {
+    $("#modalPassChangeBtn").click(function() {
         clickCountEdit++;
         if (clickCountEdit === 1) {
             $(".usrModalPassChangeWrapper").show();
-            $("#userModalPassChangeBtn").html(alert.confirmChangePass);
-            $("#userModalPassChangeBtn").attr('disabled', true);
+            $("#modalPassChangeBtn").html(alert.confirmChangePass);
+            $("#modalPassChangeBtn").attr('disabled', true);
             validate.rtTextValidation($("#modalUsrPassChange"), validate.pass, 20, "validPassChange", unlockPassChangeBtn);
             validate.rtTextValidation($("#modalUsrPassChangeConfirm"), validate.compare, $("#modalUsrPassChange"), "validPassChangeConfirm", unlockPassChangeBtn);
         } else if (clickCountEdit === 2) { //add validation
@@ -574,8 +575,8 @@ $("#all").click(function() {
             $("#modalUsrPassChange").css('background-color', 'transparent');
             $("#modalUsrPassChangeConfirm").val("");
             $("#modalUsrPassChangeConfirm").css('background-color', 'transparent');
-            $("#userModalPassChangeBtn").html(alert.changePass);
-            $("#userModalPassChangeBtn").attr('disabled', false);
+            $("#modalPassChangeBtn").html(alert.changePass);
+            $("#modalPassChangeBtn").attr('disabled', false);
             request("post","../Controller/changePass.php", toSend);
         }
     });
