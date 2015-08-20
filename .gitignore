@@ -50,3 +50,5 @@ nbproject/private/private.xml
 *.png
 Controller/dbConnect.php
 Controller/dbConnect.php
+Controller/approval.php
+Controller/mod.php

@@ -362,7 +362,7 @@ var alert = {
     logInSuccess: "Zalogowano pomyślnie",
     logInFail: "Błędne dane logowania",
     logOutSuccess: "Wylogowano poprawnie",
-    uploadSuccess: "Dodano pomyślnie, obrazek pojawi się po zatwierdzeniu przez moderatora",
+    uploadSuccess: "Dodano pomyślnie, oczekiwanie na zatwierdzenie przez moderatora",
     sthWentWrong: "Wystąpił problem!",
     fileExist: "Plik o takiej nazwie istnieje już w naszej bazie.",
     tooBig: "Plik ma zbyt duży rozmiar!",
