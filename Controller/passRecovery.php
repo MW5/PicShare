@@ -37,7 +37,7 @@ if ($valid == 1) {
 //        $to      = "$email";
 //        $subject = "$translation->mailPassRecovery";
 //        $message = "$passRecoveryLink";
-//        $headers = "From: '$translation->mailFrom\r\n'" . phpversion();
+//        $headers = "From: '$translation->websiteMail\r\n'" . phpversion();
 //        mail($to, $subject, $message, $headers);
         echo $response;
     } else {

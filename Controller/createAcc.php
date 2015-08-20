@@ -28,7 +28,7 @@ if (preg_match($emailRe, $email) && strlen($email)<=50) {
 }
 
 //name validation
-if (strlen($name) > 0 && strlen($name) < 15) {
+if (strlen($name) > 0 && strlen($name) <= 15) {
     $checkNameExist = "select * from users where usrname='$name'";
     $response = $createAccRequest->connection($dbName, $checkNameExist);
     $exists = $response->num_rows;
@@ -60,7 +60,7 @@ if ($valid == 3) {
 //        $to      = "$email";
 //        $subject = "$translation->mailConfirmReg";
 //        $message = "$activationLink";
-//        $headers = "From: '$translation->mailFrom\r\n'" . phpversion();
+//        $headers = "From: '$translation->websiteMail\r\n'" . phpversion();
 //        mail($to, $subject, $message, $headers);
         echo $response;
     } else {

@@ -6,7 +6,8 @@ if (isset($_SESSION['loggedUsr'])) {
     $target_file = $target_dir . basename($_FILES["file"]["name"]);
     $uploadOk = 1;
     $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-
+    $noExt = basename($_FILES["file"]["name"], ".".$imageFileType);
+    
     // Check if image file is a actual image or fake image
     $check = getimagesize($_FILES["file"]["tmp_name"]);
     if($check !== false) {
@@ -15,7 +16,7 @@ if (isset($_SESSION['loggedUsr'])) {
         $uploadOk = 0;
     }
     // Check if file already exists
-    if (file_exists($target_file)) {
+    if (glob ("../uploadedPics/$noExt.*")){
         echo "exist";
         $uploadOk = 0;
     }

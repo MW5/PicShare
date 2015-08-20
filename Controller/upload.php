@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedUsrId'])) {
     }
 
     if (($currentContent == "pic" || $currentContent == "vid") && strlen($pathData)>0 && strlen($text) >0) {
-        $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$currentContent', '$text', '$tag', 0, null)";
+        $query = "insert into links value (null, $usrId, '$usrName','$pathData', '$currentContent', '$text', '$tag', 0, null, false)";
         $uploadRequest = new dbConnect;
         $response = $uploadRequest->connection($dbName, $query);
     }

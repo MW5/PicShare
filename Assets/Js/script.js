@@ -49,6 +49,20 @@ function unlockRegBtn () {
     }
 }
 
+//contact validation
+validContactEmail = false;
+validContactName = false;
+validContactTopic = false;
+validContactMsg = false;
+function unlockContactBtn () {
+    if (validContactEmail && validContactName && validContactMsg && validContactTopic) {
+        $("#modalContactBtn").prop('disabled', false);
+    } else {
+        $("#modalContactBtn").prop('disabled', true);
+    }
+}
+
+
 //checks whether to display one or more
 function displayMode () {
     shortAddr = (window.location.href);
@@ -114,7 +128,7 @@ var validate = {
         }
     },
     //validates register mail address
-    regMailValidation: function(toCheck, maxLength) {
+    mailValidation: function(toCheck, maxLength) {
         re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
         if (re.test(toCheck.val()) && toCheck.val().length <= maxLength) {
             toCheck.css('background-color', GOODCOLOR);
@@ -321,6 +335,15 @@ function request(type, url, dataToSend) {
                     alert.createAlert(alert.sthWentWrong, alert.warn);
                 }
             }
+            //contact
+            if (url.search("contact")>=0) {
+                if (data === "1") {
+                    alert.createAlert(alert.msgSent, alert.succ);
+                    $("#contactModal").modal('toggle');
+                } else {
+                    alert.createAlert(alert.sthWentWrong, alert.warn);
+                }
+            }
         })
         .fail(function() {
             alert.createAlert(alert.sthWentWrong, alert.dang);
@@ -339,7 +362,7 @@ var alert = {
     logInSuccess: "Zalogowano pomyślnie",
     logInFail: "Błędne dane logowania",
     logOutSuccess: "Wylogowano poprawnie",
-    uploadSuccess: "Dodano pomyślnie",
+    uploadSuccess: "Dodano pomyślnie, obrazek pojawi się po zatwierdzeniu przez moderatora",
     sthWentWrong: "Wystąpił problem!",
     fileExist: "Plik o takiej nazwie istnieje już w naszej bazie.",
     tooBig: "Plik ma zbyt duży rozmiar!",
@@ -351,6 +374,7 @@ var alert = {
     noEmail: "Podany adres e-mail nie istnieje w naszej bazie danych",
     passRecovery: "Na podany adres e-mail wysłano link do zmiany hasła",
     passChanged: "Pomyślnie ustawiono nowe hasło",
+    msgSent: "Wysłano wiadomość",
     //types
     succ: "Success",
     info: "Info",
@@ -535,11 +559,10 @@ $("#all").click(function() {
     
     
     //registration
-    validate.rtTextValidation($("#modalRegisterEmail"), validate.regMailValidation, 50, "validEmail", unlockRegBtn);
-    
+    //mail
+    validate.rtTextValidation($("#modalRegisterEmail"), validate.mailValidation, 50, "validEmail", unlockRegBtn);
     //name
     validate.rtTextValidation($("#modalRegisterName"), validate.nameText, 15, "validName", unlockRegBtn);
-    
     //password
     validate.rtTextValidation($("#modalRegisterPass"), validate.pass, 20, "validPass", unlockRegBtn);
     
@@ -590,4 +613,18 @@ $("#all").click(function() {
         $("#modalChangePassBtn").attr('disabled', false);
     });
     
+    //contact
+    //email
+    validate.rtTextValidation($("#modalContactEmail"), validate.mailValidation, 50, "validContactEmail", unlockContactBtn);
+    //name
+    validate.rtTextValidation($("#modalContactName"), validate.nameText, 50, "validContactName", unlockContactBtn);
+    //topic
+    validate.rtTextValidation($("#modalContactTopic"), validate.nameText, 50, "validContactTopic", unlockContactBtn);
+    //password
+    validate.rtTextValidation($("#modalContactMsg"), validate.nameText, 500, "validContactMsg", unlockContactBtn);
+    
+    $("#modalContactBtn").click(function() {
+        toSend = {email: $("#modalContactEmail").val(), name: $("#modalContactName").val(), topic: $("#modalContactTopic").val(), msg: $("#modalContactMsg").val()};
+        request("post","../Controller/contact.php", toSend);
+    });
 });

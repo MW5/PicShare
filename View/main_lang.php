@@ -53,10 +53,11 @@ class Lang extends Config {
     
     //contact modal
     public $contactModalHeading = "Kontakt";
-    public $contactModalNameLabel = "Imię i nazwisko lub nazwa firmy";
+    public $contactModalNameLabel = "Imię i nazwisko lub nazwa firmy (do 50 znaków)";
     public $contactModalEmailLabel = "Adres E-mail";
     public $contactModalCaptchaLabel = "Kod";
-    public $contactModalMessageLabel = "Wiadomość";
+    public $contactModalTopicLabel = "Temat (do 50 znaków)";
+    public $contactModalMessageLabel = "Wiadomość (do 500 znaków)";
     public $contactModalBtn = "Wyślij";
 
     //terms of usage
@@ -74,7 +75,7 @@ class Lang extends Config {
     //mail
     public $mailConfirmReg = "Potwierdź rejestrację"; //gdzie?
     public $mailContent = "";
-    public $mailFrom = "Nazwa portalu";
+    public $websiteMail = "Nazwa portalu";
     public $mailPassRecovery = "Kliknij aby zresetować hasło";
     
     //display

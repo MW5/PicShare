@@ -14,17 +14,17 @@ $displayRequest = new dbConnect;
 
 if ($currentContent=="one") {
     $picName = htmlspecialchars($_POST['name']);
-    $query = "select uploadername, path, type, text, tag, points, uploaddate from links where (path regexp '^$picName".".[a-z]')";
+    $query = "select uploadername, path, type, text, tag, points, uploaddate from links where (path regexp '^$picName".".[a-z]') and approved=true";
 } else if ($currentContent=="topTen") {
-    $query = "select uploadername, path, type, text, tag, points, uploaddate from links order by points desc limit 10";
+    $query = "select uploadername, path, type, text, tag, points, uploaddate from links where approved=true order by points desc limit 10";
 } else {
     $typeQuery = $currentPage*10-10;
     if ($currentContent=="all") {
-        $query = "select uploadername, path, type, text, tag, points, uploaddate from links order by uploaddate desc limit 10 offset $typeQuery";
-        $getNum = "select linkid from links";  
+        $query = "select uploadername, path, type, text, tag, points, uploaddate from links where approved=true order by uploaddate desc limit 10 offset $typeQuery";
+        $getNum = "select linkid from links where approved=true";  
     } else {
-        $query = "select uploadername, path, type, text, tag, points, uploaddate from links where tag='$currentContent' order by uploaddate desc limit 10 offset $typeQuery";
-        $getNum = "select linkid from links where tag='$currentContent'";
+        $query = "select uploadername, path, type, text, tag, points, uploaddate from links where tag='$currentContent' and approved=true order by uploaddate desc limit 10 offset $typeQuery";
+        $getNum = "select linkid from links where tag='$currentContent' and approved=true";
     }
     $getNumResp= $displayRequest->connection($dbName, $getNum);
     $numOfLinks = $getNumResp->num_rows;
@@ -52,21 +52,23 @@ for ($i=0; $i<$numOfMatches; $i++) {
         array_push($displayed,$toDisplay['path']);
         echo "<div class='displayedWrapper'><p class='description'>".$toDisplay['text'];
                 if ($toDisplay['tag']==$currentContent) {
-                    echo "<a id='tag".$toDisplay['tag']."' class='currentTag'>#".$toDisplay['tag']."</a>";
+                    echo "<a id='tag".$toDisplay['tag']."' class='currentTag'>#".$toDisplay['tag']."</a></p>";
                 } else if ($currentContent === "one") {
-                    echo "<a id='tag".$toDisplay['tag']."' class='onePicTag'>#".$toDisplay['tag']."</a>";
+                    echo "<a id='tag".$toDisplay['tag']."' class='onePicTag'>#".$toDisplay['tag']."</a></p>";
                 } else {
-                    echo "<a id='tag".$toDisplay['tag']."' class='singleTag'>#".$toDisplay['tag']."</a>";
+                    echo "<a id='tag".$toDisplay['tag']."' class='singleTag'>#".$toDisplay['tag']."</a></p>";
                 }
+                
         $pathNoExtension = explode(".", $toDisplay['path']);
-        echo "<div class='fb-like' data-href='..\\UploadedPicPages\\$pathNoExtension[0].php' data-layout='button_count' data-action='like' data-show-faces='true' data-share='true' width='60px'></div></p>";
+        //facebook stuff
+        echo "<div class='fb-like' data-href='..\\UploadedPicPages\\$pathNoExtension[0].php' data-layout='button_count' data-action='like' data-show-faces='true' data-share='true' width='60px'></div>";
+        
         if ($toDisplay['type']=="pic") {
-            
             //check what link url to set according to mode of displaying (one or all)
             if ($currentContent=="one") {
                  echo "<a href='..\\Public\\index.php'><img class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."' alt='$pathNoExtension[0]'></a>";
             } else {
-            echo "<a href='..\\UploadedPicPages\\$pathNoExtension[0].php'><img width='80%' height='auto' class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."' alt='$pathNoExtension[0]'></a>";
+            echo "<a id='".$toDisplay['path']."' href='..\\UploadedPicPages\\$pathNoExtension[0].php'><img width='80%' height='auto' class='pic displayed' src='..\\UploadedPics\\".$toDisplay['path']."' alt='$pathNoExtension[0]'></a>";
             }
         } else {
             echo "<iframe width='80%' height='415' class='vid displayed' src='https://www.youtube.com/embed/".$toDisplay['path']."' frameborder='0' allowfullscreen></iframe>";

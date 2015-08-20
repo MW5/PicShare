@@ -76,6 +76,7 @@ class Model {
         public $contactModalNameLabel;
         public $contactModalEmailLabel;
         public $contactModalCaptchaLabel;
+        public $contactModalTopicLabel;
         public $contactModalMessageLabel;
         public $contactModalBtn;
         
@@ -348,6 +349,10 @@ class Model {
                           <div class='form-group'>
                             <label for='pwd'>$this->contactModalCaptchaLabel:</label>
                             PUT CAPTCHA HERE
+                          </div>
+                          <div class='form-group'>
+                            <label for='text'>$this->contactModalTopicLabel:</label>
+                            <input type='text' class='form-control' id='modalContactTopic'></textarea>
                           </div>
                           <div class='form-group'>
                             <label for='text'>$this->contactModalMessageLabel:</label>

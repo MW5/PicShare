@@ -13,10 +13,10 @@ if (isset($_SESSION['loggedUsr'])) {
 
     if ($grade == "plus") {
         $query = "update links set points=points+1 where path='$target'";
-        $authorGradeQuery = "update users, links set points=points+1 where users.usrid=links.uploaderid and path='$target'";
+        $authorGradeQuery = "update users, links set users.points=users.points+1 where users.usrid=links.uploaderid and path='$target'";
     } else {
         $query = "update links set points=points-1 where path='$target'";
-        $authorGradeQuery = "update users, links set points=points-1 where users.usrid=links.uploaderid and path='$target'";
+        $authorGradeQuery = "update users, links set users.points=users.points-1 where users.usrid=links.uploaderid and path='$target'";
     }
     $usrGradeQuery = "insert into grades value ($usrId, '$target')";
     
@@ -25,6 +25,8 @@ if (isset($_SESSION['loggedUsr'])) {
     if ($usrGradeQueryResponse==1) {
         $response = $gradeRequest->connection($dbName, $query);
         $authorPointresponse = $gradeRequest->connection($dbName, $authorGradeQuery);
+        echo $authorGradeQuery;
+        echo $authorPointresponse;
         echo $response;
     }
     
